@@ -25,7 +25,7 @@
 
 using namespace std;
 
-double f(double x){
+double pdf(double x){
     return exp(-0.5 * x * x) / sqrt(2 * PI);
 };
 
@@ -103,14 +103,40 @@ double BSDelta(double S, double K, double r, double T, double v, char optType, d
     else
         return exp(-r * q) * (N1(d1) - 1); // if q == 0 -->> exp (-r * 0) = 1
 };
-
 // Black and Scholes Gamma
-double BDGamma(double S, double K, double r, double T, double v, double q = 0){
+double BSGamma(double S, double K, double r, double T, double v, double q = 0){
     double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
-
-    return f(d1) / (S * v * sqrt(T));
+    return pdf(d1) / (S * v * sqrt(T));
 };
-
+// Black and Scholes Vega
+double BSVega(double S, double K, double T, double r, double v, double q = 0){
+    double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
+    return 0.01 * pdf(d1) * S * exp(-q * T); // 0.01 because /100 to be in %
+};
+// Black and Scholes Rho
+double BSRho(double S, double K, double T, double r, double v, char OpType){
+    double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
+    double d2 = d1 - v * sqrt(T);
+    if (optType == 'C')
+        return K * T * exp(-r * T) * N1(d2);
+    else
+        return -K * T * exp(-r * T) * N1(-d2);
+};
+// Black and Scholes Theta
+double BSTheta(double S, double K, double T, double r, double v, char OpType, double q = 0){
+    double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
+    double d2 = d1 - v * sqrt(T);
+    if (optType == 'C')
+        if (q == 0) // without dividend
+            return -K * exp(-r * T) * (r * N1(d2) + v * pdf(d2) / 2 * sqrt(T)); // Theta call no dividend
+        else // q != 0 -> with dividend
+            return q* S * exp(-q * T) * N1(d1) - K * exp(-r * T) * (r * N1(d2) + v * pdf(d2) / 2 * sqrt(T));
+    else // optType == P
+        if (q == 0) // without dividend
+            return K * exp(-r * T) * (r * N1(-d2) - v * pdf(d2) / 2 * sqrt(T)); // Theta put no dividend
+        else // with dividend
+            return -q * S * exp(-q * T) * N1(-d1) + K * exp(-r * T) * (r * N1(-d2) - v * pdf(-d2) / 2 * sqrt(T));
+};
 
 
 
