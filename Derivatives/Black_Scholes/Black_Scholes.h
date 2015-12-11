@@ -36,7 +36,8 @@ double pdf(double x);
 
 // Black and Scholes valuation
 double BSPrice(double S, double K, double T, double r, double v, char optType);
-double BSImpliedVol(double S, double K, double T, double r, double v, char optType);
+double BSImplVol(double S, double K, double T, double r, double v, char optType);
+double BSImplVol2(double S, double K, double T, double r, double v, double optType, double q = 0);
 
 // Black and Scholes Greeks
 double BSDelta(double S, double K, double T, double r, double v, char optType, double q = 0);
