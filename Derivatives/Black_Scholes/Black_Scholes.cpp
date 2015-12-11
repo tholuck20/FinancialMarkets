@@ -148,7 +148,6 @@ double BSImplVol(double S, double K, double T, double r, double v, double optTyp
     };
 }
 
-
 double BSImplVol2(double S, double K, double T, double r, double v, double optType, double q = 0){
     double cpTest = 0;
     double IV = 50;
@@ -176,13 +175,31 @@ double BSImplVol2(double S, double K, double T, double r, double v, double optTy
     return IV;
 }
 
+double BSVanna(double S, double K, double T, double r, double v){
+    double d1 = (log(S / K) + (b - q + 0.5 * v * v) * T) / (v * sqrt(T));
+    double d2 = d1 - v * sqrt(T);
+
+    return -exp(-q * T) * pdf(d1) * d2 / v;
+}
+
+double BSCharm(double S, double K, double T, double r, double v, char optType){
+    double d1 = (log(S / K) + (b - q + 0.5 * v * v) * T) / (v * sqrt(T));
+    double d2 = d1 - v * sqrt(T);
+
+    if(optType == 'C'){
+        return -q * exp(-q * T) * N1(d1) + exp(-q * T) * pdf(d1) * \
+        (2 * (r - q) * T - d2 * v * sqrt(T))/(2 * T * v * sqrt(T)); }
+    else {
+        return q * exp(-q * T) * N1(-d1) + exp(-q * T) * pdf(d1) * \
+        (2 * (r - q) * T - d2 * v * sqrt(T)) / (2 * T * v * sqrt(T));
+    };
+}
 
 
 
 
 
-double BSVanna(double S, double K, double T, double r, double v, char optType){}
-double BSCharm(double S, double K, double T, double r, double v, char optType){}
+
 double BSSpeed(double S, double K, double T, double r, double v, char optType){}
 double BSZomma(double S, double K, double T, double r, double v, char optType){}
 double BSColor(double S, double K, double T, double r, double v, char optType){}
