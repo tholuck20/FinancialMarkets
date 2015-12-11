@@ -1,4 +1,4 @@
-// Approximations for Normal Distribution Function (NDF)
+// Approximations for Cumulative Normal Function (CNF)
 // Also known as Cumulative Distribution Function (CDF)
 // Created by mneri092115 on 11/12/2015.
 
@@ -31,7 +31,7 @@ double N1(double x){
     double sum = x;
     double temp = x;
 
-    for(int i=1; i<=1000; ++i){
+    for(int i=1; i<=1000; i++){
         temp = (temp * x * x / (2 * i + 1));
         sum += temp;
     }
@@ -51,7 +51,7 @@ double Boole(double StartPoint, double EndPoint, int n) {
     vector<double> X(n+1, 0.0);
     vector<double> Y(n+1, 0.0);
     double delta_x = (EndPoint - StartPoint)/double(n);
-    for (int i=0; i<=n; ++i) {
+    for (int i=0; i<=n; i++) {
         X[i] = StartPoint + i*delta_x;
         Y[i] = f(X[i]);
     }
