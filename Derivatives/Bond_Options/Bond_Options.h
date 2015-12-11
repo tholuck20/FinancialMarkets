@@ -1,3 +1,14 @@
+//
+// Created by mneri092115 on 11/12/2015.
+//
+
+#ifndef DERIVATIVES_BOND_OPTIONS_H
+#define DERIVATIVES_BOND_OPTIONS_H
+#include <vector>
+#include <cmath>
+using namespace std;
+
+
 // BlackBondOpt(BondLife,Coupon,Princ,Frequ,K,T,vol,IsCall,IsQuoted,Zeros,Result)
 // Calculations for bond options usng Black's model
 
@@ -8,3 +19,6 @@
 // Calculations for bond options usng a trinomial tree
 
 //BondPricing(BondLife, Coupon, Princ, Frequ, Zeros, IsClean, Result)
+
+
+#endif //DERIVATIVES_BOND_OPTIONS_H
