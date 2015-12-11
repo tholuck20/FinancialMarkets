@@ -71,7 +71,7 @@ double N2(double x) {
 
 //////////////////////////////////////////////// Abramowitz and Stegun ////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Abramowitz and Stegun approximation for cumulative normal distribution
+// Abramowitz and Stegun approximation for cumulative normal distribution function (CDF)
 double N3(double x){
     const double b = 0.2316419;
     const double a1 = 0.319381530; const double a2 = 0.356563782;
