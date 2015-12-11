@@ -19,6 +19,8 @@
 
 #define PI (3.141592653589793238462643383279)
 
+#include "Black_Scholes.h"
+
 #include <cmath>
 #include <iomanip>
 #include <iostream>
