@@ -9,40 +9,22 @@
 using namespace std;
 
 
-// Tools
-/* As N is a density (integral), we can use several method to approximate the function:
- *
- - Méthode des rectangles / Rectangle method
- - Méthode des trapèzes / Trapezoidal rule
- - Méthode de Simpson / Simpson's rule
- - Méthode de Gauss-Legendre /
- - Midpoint method
- - Heun's method
- - Euler method
- - Verlet integration
- *
- Which one is the most appropriate to approximate the Standard normal Probability Density Function?
- *
-*/
-// Standard normal Cumulative distribution function (CDF) = Fonction de répartition
-double N1(double x);
-double N2(double x);
-double N3(double x); // N1 = 34 at 9 numbers after the decimal point
-double Boole(double StartPoint, double EndPoint, int n);
 
+// Standard normal Cumulative distribution function (CDF) = Fonction de répartition
+double N1(double x); // done
 // Standard normal Probability Density Function (PDF) = Densité de probabilité
-double pdf(double x);
+double pdf(double x); // done
 
 // Black and Scholes valuation
-double BSPrice(double S, double K, double r, double T, double v, char optType);
-double BSImpliedVol(double S, double K, double r, double T, double v, char optType);
+double BSPrice(double S, double K, double T, double r, double v, char optType); // done
+double BSImpliedVol(double S, double K, double T, double r, double v, char optType); //////////////////////////////////////////////
 
 // Black and Scholes Greeks
-double BSDelta(double S, double K, double r, double T, double v, char optType, double q = 0);
-double BSGamma(double S, double K, double T, double r, double v, double q = 0);
-double BSVega(double S, double K, double T, double r, double v, double q = 0);
-double BSRho(double S, double K, double T, double r, double v, char OpType);
-double BSTheta(double S, double K, double T, double r, double v, char OpType, double q = 0);
+double BSDelta(double S, double K, double T, double r, double v, char optType, double q = 0); // done
+double BSGamma(double S, double K, double T, double r, double v, double q = 0); // done
+double BSVega(double S, double K, double T, double r, double v, double q = 0); // done
+double BSRho(double S, double K, double T, double r, double v, char OpType); // done
+double BSTheta(double S, double K, double T, double r, double v, char OpType, double q = 0); // done
 
 double BSVanna(double S, double K, double T, double r, double v, char OpType);
 double BSCharm(double S, double K, double T, double r, double v, char OpType);
