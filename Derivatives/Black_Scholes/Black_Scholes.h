@@ -46,7 +46,7 @@ double BSVega(double S, double K, double T, double r, double v, double q = 0);
 double BSRho(double S, double K, double T, double r, double v, char optType);
 double BSTheta(double S, double K, double T, double r, double v, char optType, double q = 0);
 
-double BSVanna(double S, double K, double T, double r, double v, char optType);
+double BSVanna(double S, double K, double T, double r, double v);
 double BSCharm(double S, double K, double T, double r, double v, char optType);
 double BSSpeed(double S, double K, double T, double r, double v, char optType);
 double BSZomma(double S, double K, double T, double r, double v, char optType);
