@@ -35,19 +35,21 @@ double Boole(double StartPoint, double EndPoint, int n);
 double pdf(double x);
 
 // Black and Scholes valuation
-double BSPrice(double S, double K, double T, double r, double v, char optType);
-double BSImplVol(double S, double K, double T, double r, double v, char optType);
+double BSPrice(double S, double K, double T, double r, double v, char optType, double q = 0);
+double BSImplVol(double S, double K, double T, double r, double v, double optType, double q = 0);
 double BSImplVol2(double S, double K, double T, double r, double v, double optType, double q = 0);
+double BSImplVol3(double S, double K, double T, double r, double v, double optType, double q = 0);
 
 // Black and Scholes Greeks
 double BSDelta(double S, double K, double T, double r, double v, char optType, double q = 0);
 double BSGamma(double S, double K, double T, double r, double v, double q = 0);
 double BSVega(double S, double K, double T, double r, double v, double q = 0);
-double BSRho(double S, double K, double T, double r, double v, char optType);
+double BSRho(double S, double K, double T, double r, double v, char optType, double q = 0);
 double BSTheta(double S, double K, double T, double r, double v, char optType, double q = 0);
 
-double BSVanna(double S, double K, double T, double r, double v);
-double BSCharm(double S, double K, double T, double r, double v, char optType);
+double BSVanna(double S, double K, double T, double r, double v, double q = 0, double b = 0); //////
+double BSCharm(double S, double K, double T, double r, double v, char optType, double q = 0, double b = 0); //////
+
 double BSSpeed(double S, double K, double T, double r, double v, char optType);
 double BSZomma(double S, double K, double T, double r, double v, char optType);
 double BSColor(double S, double K, double T, double r, double v, char optType);
