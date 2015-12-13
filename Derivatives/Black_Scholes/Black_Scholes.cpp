@@ -21,10 +21,9 @@
 
 #include "Black_Scholes.h"
 
-#include <cmath>
+//#include <cmath>
 #include <iomanip>
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
@@ -48,7 +47,8 @@ double N1(double x){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Black and Scholes Price
-double BSPrice(double S, double K, double T, double r, double v, char optType, double q = 0, double b = r){
+double BSPrice(double S, double K, double T, double r, double v, char optType, double q){
+    double b = r;
     double d1 = (log(S / K) + (b - q + 0.5 * v * v) * T) / (v * sqrt(T));
     // b not r in case of underlying is a commodity (and b is defined so != r), if not b = r
     double d2 = d1 - v * sqrt(T);
@@ -62,7 +62,7 @@ double BSPrice(double S, double K, double T, double r, double v, char optType, d
 }
 
 // Black and Scholes Delta
-double BSDelta(double S, double K, double T, double r, double v, char optType, double q = 0){
+double BSDelta(double S, double K, double T, double r, double v, char optType, double q){
     double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
     if (optType == 'C')
         return exp(-q * T) * N1(d1);
@@ -71,19 +71,19 @@ double BSDelta(double S, double K, double T, double r, double v, char optType, d
 }
 
 // Black and Scholes Gamma
-double BSGamma(double S, double K, double T, double r, double v, double q = 0){
+double BSGamma(double S, double K, double T, double r, double v, double q){
     double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
     return pdf(d1) / (S * v * sqrt(T));
 }
 
 // Black and Scholes Vega
-double BSVega(double S, double K, double T, double r, double v, double q = 0){
+double BSVega(double S, double K, double T, double r, double v, double q){
     double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
     return 0.01 * pdf(d1) * S * exp(-q * T); // 0.01 because /100 to be in %
 }
 
 // Black and Scholes Rho
-double BSRho(double S, double K, double T, double r, double v, char optType){
+double BSRho(double S, double K, double T, double r, double v, char optType, double q){
     double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
     double d2 = d1 - v * sqrt(T);
     if (optType == 'C')
@@ -93,23 +93,23 @@ double BSRho(double S, double K, double T, double r, double v, char optType){
 }
 
 // Black and Scholes Theta
-double BSTheta(double S, double K, double T, double r, double v, char optType, double q = 0){
+double BSTheta(double S, double K, double T, double r, double v, char optType, double q){
     double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
     double d2 = d1 - v * sqrt(T);
     if (optType == 'C')
-        if (q == 0) // without dividend
-            return -K * exp(-r * T) * (r * N1(d2) + v * pdf(d2) / 2 * sqrt(T)); // Theta call no dividend
-        else // q != 0 -> with dividend
-            return q* S * exp(-q * T) * N1(d1) - K * exp(-r * T) * (r * N1(d2) + v * pdf(d2) / 2 * sqrt(T));
+    if (q == 0) // without dividend
+        return -K * exp(-r * T) * (r * N1(d2) + v * pdf(d2) / 2 * sqrt(T)); // Theta call no dividend
+    else // q != 0 -> with dividend
+        return q* S * exp(-q * T) * N1(d1) - K * exp(-r * T) * (r * N1(d2) + v * pdf(d2) / 2 * sqrt(T));
     else // optType == P
-        if (q == 0) // without dividend
-            return K * exp(-r * T) * (r * N1(-d2) - v * pdf(d2) / 2 * sqrt(T)); // Theta put no dividend
-        else // with dividend
-            return -q * S * exp(-q * T) * N1(-d1) + K * exp(-r * T) * (r * N1(-d2) - v * pdf(-d2) / 2 * sqrt(T));
+    if (q == 0) // without dividend
+        return K * exp(-r * T) * (r * N1(-d2) - v * pdf(d2) / 2 * sqrt(T)); // Theta put no dividend
+    else // with dividend
+        return -q * S * exp(-q * T) * N1(-d1) + K * exp(-r * T) * (r * N1(-d2) - v * pdf(-d2) / 2 * sqrt(T));
 }
 
 // Implied Volatility using the Newton-Raphson method
-double BSImplVol(double S, double K, double T, double r, double v, double optType, double q = 0){
+double BSImplVol(double S, double K, double T, double r, double v, double optType, double q){
     const double epsilon = 0.00000001;
     // Manaster and Koehler seed value
     double vi = sqrt(fabs(log(S / K) + r * T) * 2 / T);
@@ -130,35 +130,35 @@ double BSImplVol(double S, double K, double T, double r, double v, double optTyp
         return 0;
 }
 
-double BSImplVol(double S, double K, double T, double r, double v, double optType, double q = 0){
+double BSImplVol3(double S, double K, double T, double r, double v, double optType, double q) {
     const double epsilon = 0.00000001;
     const double dVol = 0.00000001;
     const int maxIter = 100000;
     double vol_1 = v, price_1, vol_2, price_2, dx;
 
     for (int i = 1; i < maxIter; i++) {
-        double price_1 = BSPrice(S, K, T, r, vol_1, optType);
-        double vol_2 = vol_1 - dVol;
-        double price_2 = BSPrice(S,K,T,r,vol_2, optType);
-        double dx = (price_2 - price_1) / dVol;
+        price_1 = BSPrice(S, K, T, r, vol_1, optType,q);
+        vol_2 = vol_1 - dVol;
+        price_2 = BSPrice(S,K,T,r,vol_2, optType,q);
+        dx = (price_2 - price_1) / dVol;
         if (fabs(dx) < epsilon || i == maxIter)
             return vol_1;
         else
             vol_1 = vol_1 - (BSPrice(S,K,T,r,v,optType,q) - price_1) / dx;
     };
+    return vol_1;
 }
 
-double BSImplVol2(double S, double K, double T, double r, double v, double optType, double q = 0){
+double BSImplVol2(double S, double K, double T, double r, double v, double optType, double q){
     double cpTest = 0;
     double IV = 50;
     double upper = 50;
     double lower = 0;
-    double range = fabs(lower - upper);
-    double price = BSPrice(S,K,T,r,v,optType);
+    double range;
+    double price = BSPrice(S,K,T,r,v,optType,q);
 
-    bool dnword = true;
     while(1){
-        cpTest = BSPrice(S,K,T,r,IV,optType);
+        cpTest = BSPrice(S,K,T,r,IV,optType,q);
 
         if(cpTest > price){
             upper = IV;
@@ -175,14 +175,14 @@ double BSImplVol2(double S, double K, double T, double r, double v, double optTy
     return IV;
 }
 
-double BSVanna(double S, double K, double T, double r, double v){
+double BSVanna(double S, double K, double T, double r, double v, double q, double b){
     double d1 = (log(S / K) + (b - q + 0.5 * v * v) * T) / (v * sqrt(T));
     double d2 = d1 - v * sqrt(T);
 
     return -exp(-q * T) * pdf(d1) * d2 / v;
 }
 
-double BSCharm(double S, double K, double T, double r, double v, char optType){
+double BSCharm(double S, double K, double T, double r, double v, char optType, double q, double b){
     double d1 = (log(S / K) + (b - q + 0.5 * v * v) * T) / (v * sqrt(T));
     double d2 = d1 - v * sqrt(T);
 
@@ -200,13 +200,13 @@ double BSCharm(double S, double K, double T, double r, double v, char optType){
 
 
 
-double BSSpeed(double S, double K, double T, double r, double v, char optType){}
-double BSZomma(double S, double K, double T, double r, double v, char optType){}
-double BSColor(double S, double K, double T, double r, double v, char optType){}
-double BSdVega_dTime(double S, double K, double T, double r, double v, char optType){}
-double BSVomma(double S, double K, double T, double r, double v, char optType){}
-double BSDualDelta(double S, double K, double T, double r, double v, char optType){}
-double BSDualGamma(double S, double K, double T, double r, double v, char optType){}
+//double BSSpeed(double S, double K, double T, double r, double v, char optType){}
+//double BSZomma(double S, double K, double T, double r, double v, char optType){}
+//double BSColor(double S, double K, double T, double r, double v, char optType){}
+//double BSdVega_dTime(double S, double K, double T, double r, double v, char optType){}
+//double BSVomma(double S, double K, double T, double r, double v, char optType){}
+//double BSDualDelta(double S, double K, double T, double r, double v, char optType){}
+//double BSDualGamma(double S, double K, double T, double r, double v, char optType){}
 
 
 
@@ -219,6 +219,7 @@ int main()
     double r = 0.05;
     double T = 1;
     double v = 0.25;
+    //double q = 0.00;
     char optType = 'C';
     char optType2 = 'P';
 
