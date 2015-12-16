@@ -19,22 +19,24 @@
 
 #define PI (3.141592653589793238462643383279)
 
-#include "Black_Scholes.h"
+#include "Black_Scholes.hpp"
+#include <../Tools/NDApprox.hpp>
 
-//#include <cmath>
+#include <cmath>
 #include <iomanip>
 #include <iostream>
 
 using namespace std;
 
 // Probability Density Function
-double pdf(double x){
+double PDF(double x)
+{
     return exp(-0.5 * x * x) / sqrt(2 * PI);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Marsaglia (2004) approximation for NDF with own C++ code
-double N1(double x){
+double CND(double x)
+{
     double sum = x;
     double temp = x;
 
@@ -47,7 +49,8 @@ double N1(double x){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Black and Scholes Price
-double BSPrice(double S, double K, double T, double r, double v, char optType, double q){
+double BSPrice(double S, double K, double T, double r, double v, char optType, double q, double b)
+{
     double b = r;
     double d1 = (log(S / K) + (b - q + 0.5 * v * v) * T) / (v * sqrt(T));
     // b not r in case of underlying is a commodity (and b is defined so != r), if not b = r
@@ -56,60 +59,66 @@ double BSPrice(double S, double K, double T, double r, double v, char optType, d
     if (optType == 'C')
         // When commodity: b != r and q = 0 so only exp((b-r)*T) left
         // When !commodity: b = r and q may be != 0 so only exp(-q*T) left
-        return  S * exp((b - r) * T) * exp(-q * T) * N1(d1) - K * exp(-r * T) * N1(d2);
+        return  S * exp((b - r) * T) * exp(-q * T) * CND(d1) - K * exp(-r * T) * CND(d2);
     else
-        return -S * exp((b - r) * exp(-q * T) * N1(-d1) + K * exp(-r * T) * N1(-d2));
+        return -S * exp((b - r) * exp(-q * T) * CND(-d1) + K * exp(-r * T) * CND(-d2));
 }
 
 // Black and Scholes Delta
-double BSDelta(double S, double K, double T, double r, double v, char optType, double q){
+double BSDelta(double S, double K, double T, double r, double v, char optType, double q)
+{
     double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
     if (optType == 'C')
-        return exp(-q * T) * N1(d1);
+        return exp(-q * T) * CND(d1);
     else
-        return exp(-r * q) * (N1(d1) - 1); // if q == 0 -->> exp (-r * 0) = 1
+        return exp(-r * q) * (CND(d1) - 1); // if q == 0 -->> exp (-r * 0) = 1
 }
 
 // Black and Scholes Gamma
-double BSGamma(double S, double K, double T, double r, double v, double q){
+double BSGamma(double S, double K, double T, double r, double v, double q)
+{
     double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
-    return pdf(d1) / (S * v * sqrt(T));
+    return PDF(d1) / (S * v * sqrt(T));
 }
 
 // Black and Scholes Vega
-double BSVega(double S, double K, double T, double r, double v, double q){
+double BSVega(double S, double K, double T, double r, double v, double q)
+{
     double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
-    return 0.01 * pdf(d1) * S * exp(-q * T); // 0.01 because /100 to be in %
+    return 0.01 * PDF(d1) * S * exp(-q * T); // 0.01 because /100 to be in %
 }
 
 // Black and Scholes Rho
-double BSRho(double S, double K, double T, double r, double v, char optType, double q){
+double BSRho(double S, double K, double T, double r, double v, char optType, double q)
+{
     double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
     double d2 = d1 - v * sqrt(T);
     if (optType == 'C')
-        return K * T * exp(-r * T) * N1(d2);
+        return K * T * exp(-r * T) * CND(d2);
     else
-        return -K * T * exp(-r * T) * N1(-d2);
+        return -K * T * exp(-r * T) * CND(-d2);
 }
 
 // Black and Scholes Theta
-double BSTheta(double S, double K, double T, double r, double v, char optType, double q){
+double BSTheta(double S, double K, double T, double r, double v, char optType, double q)
+{
     double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
     double d2 = d1 - v * sqrt(T);
     if (optType == 'C')
     if (q == 0) // without dividend
-        return -K * exp(-r * T) * (r * N1(d2) + v * pdf(d2) / 2 * sqrt(T)); // Theta call no dividend
+        return -K * exp(-r * T) * (r * CND(d2) + v * PDF(d2) / 2 * sqrt(T)); // Theta call no dividend
     else // q != 0 -> with dividend
-        return q* S * exp(-q * T) * N1(d1) - K * exp(-r * T) * (r * N1(d2) + v * pdf(d2) / 2 * sqrt(T));
+        return q* S * exp(-q * T) * CND(d1) - K * exp(-r * T) * (r * CND(d2) + v * PDF(d2) / 2 * sqrt(T));
     else // optType == P
     if (q == 0) // without dividend
-        return K * exp(-r * T) * (r * N1(-d2) - v * pdf(d2) / 2 * sqrt(T)); // Theta put no dividend
+        return K * exp(-r * T) * (r * CND(-d2) - v * PDF(d2) / 2 * sqrt(T)); // Theta put no dividend
     else // with dividend
-        return -q * S * exp(-q * T) * N1(-d1) + K * exp(-r * T) * (r * N1(-d2) - v * pdf(-d2) / 2 * sqrt(T));
+        return -q * S * exp(-q * T) * CND(-d1) + K * exp(-r * T) * (r * CND(-d2) - v * PDF(-d2) / 2 * sqrt(T));
 }
 
 // Implied Volatility using the Newton-Raphson method
-double BSImplVol(double S, double K, double T, double r, double v, double optType, double q){
+double BSImplVol(double S, double K, double T, double r, double v, char optType, double q)
+{
     const double epsilon = 0.00000001;
     // Manaster and Koehler seed value
     double vi = sqrt(fabs(log(S / K) + r * T) * 2 / T);
@@ -130,26 +139,8 @@ double BSImplVol(double S, double K, double T, double r, double v, double optTyp
         return 0;
 }
 
-double BSImplVol3(double S, double K, double T, double r, double v, double optType, double q) {
-    const double epsilon = 0.00000001;
-    const double dVol = 0.00000001;
-    const int maxIter = 100000;
-    double vol_1 = v, price_1, vol_2, price_2, dx;
-
-    for (int i = 1; i < maxIter; i++) {
-        price_1 = BSPrice(S, K, T, r, vol_1, optType,q);
-        vol_2 = vol_1 - dVol;
-        price_2 = BSPrice(S,K,T,r,vol_2, optType,q);
-        dx = (price_2 - price_1) / dVol;
-        if (fabs(dx) < epsilon || i == maxIter)
-            return vol_1;
-        else
-            vol_1 = vol_1 - (BSPrice(S,K,T,r,v,optType,q) - price_1) / dx;
-    };
-    return vol_1;
-}
-
-double BSImplVol2(double S, double K, double T, double r, double v, double optType, double q){
+double BSImplVol2(double S, double K, double T, double r, double v, char optType, double q)
+{
     double cpTest = 0;
     double IV = 50;
     double upper = 50;
@@ -175,22 +166,80 @@ double BSImplVol2(double S, double K, double T, double r, double v, double optTy
     return IV;
 }
 
-double BSVanna(double S, double K, double T, double r, double v, double q, double b){
+double BSImplVol3(double S, double K, double T, double r, double v, char optType, double q)
+{
+    const double epsilon = 0.00000001;
+    const double dVol = 0.00000001;
+    const int maxIter = 10000;
+    double vol_1 = v, price_1, vol_2, price_2, dx;
+
+    for (int i = 1; i < maxIter; i++) {
+        price_1 = BSPrice(S, K, T, r, vol_1, optType,q);
+        vol_2 = vol_1 - dVol;
+        price_2 = BSPrice(S,K,T,r,vol_2, optType,q);
+        dx = (price_2 - price_1) / dVol;
+        if (fabs(dx) < epsilon || i == maxIter)
+            return vol_1;
+        else
+            vol_1 = vol_1 - (BSPrice(S,K,T,r,v,optType,q) - price_1) / dx;
+    };
+    return vol_1;
+}
+
+double BSImplVol4(double S, double K, double T, double r, char optType, double b, double cm)
+{
+    double vLow, vHigh, vi;
+    double cLow, cHigh, epsilon;
+    int counter;
+
+    vLow = 0.005;
+    vHigh = 4;
+    // epsilon = 0.00000001;
+    epsilon = 0.0001;
+
+    cLow = BSPrice(S, K, T, r, vLow, optType, 0, b);
+    cHigh = BSPrice(S, K, T, r, vHigh, optType, 0, b);
+    counter = 0;
+    vi = vLow + (cm - cLow) * (vHigh - vLow) / (cHigh - cLow);
+    while (fabs(cm - BSPrice(S, K, T, r, vi, optType, 0, b)) > epsilon)
+    {
+        counter = counter + 1;
+        if (counter == 500) return 0.0;// return -99999.99 ;
+        if (BSPrice(S, K, T, r, vi, optType, 0, b) < cm)
+        {
+            vLow = vi;
+        }
+        else
+        {
+            vHigh = vi;
+        }
+        cLow = BSPrice(S, K, T, r,vLow, optType,0,b);
+        cHigh = BSPrice(S, K, T, r, vHigh,optType,0,b);
+        vi = vLow + (cm - cLow) * (vHigh - vLow) / (cHigh - cLow);
+    }
+    return vi;
+
+}
+
+
+double BSVanna(double S, double K, double T, double r, double v, double q, double b)
+{
     double d1 = (log(S / K) + (b - q + 0.5 * v * v) * T) / (v * sqrt(T));
     double d2 = d1 - v * sqrt(T);
 
-    return -exp(-q * T) * pdf(d1) * d2 / v;
+    return -exp(-q * T) * PDF(d1) * d2 / v;
 }
 
-double BSCharm(double S, double K, double T, double r, double v, char optType, double q, double b){
+double BSCharm(double S, double K, double T, double r, double v, char optType, double q, double b)
+{
     double d1 = (log(S / K) + (b - q + 0.5 * v * v) * T) / (v * sqrt(T));
     double d2 = d1 - v * sqrt(T);
 
     if(optType == 'C'){
-        return -q * exp(-q * T) * N1(d1) + exp(-q * T) * pdf(d1) * \
+        return -q * exp(-q * T) * CND(d1) + exp(-q * T) * PDF(d1) * \
         (2 * (r - q) * T - d2 * v * sqrt(T))/(2 * T * v * sqrt(T)); }
     else {
-        return q * exp(-q * T) * N1(-d1) + exp(-q * T) * pdf(d1) * \
+        return q * exp(-q * T) * CND(-d1) + exp(-q * T) * PDF(d1) * \
         (2 * (r - q) * T - d2 * v * sqrt(T)) / (2 * T * v * sqrt(T));
     };
 }
