@@ -40,7 +40,8 @@ double CND(double x)
     double sum = x;
     double temp = x;
 
-    for(int i=1; i<=1000; i++){
+    for(int i=1; i<=1000; ++i)
+    {
         temp = (temp * x * x / (2 * i + 1));
         sum += temp;
     }
@@ -48,11 +49,13 @@ double CND(double x)
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Black and Scholes Price
-double BSPrice(double S, double K, double T, double r, double v, char optType, double q, double b)
+// ###########################################################################################################
+// Créer plusieurs fonctions prenant en compte q (dividend), b (cost of carry)
+// Black and Scholes Price + Merton for dividend
+double BSPrice(double S, double K, double T, double r, double v, char optType, double q)
 {
     double b = r;
-    double d1 = (log(S / K) + (b - q + 0.5 * v * v) * T) / (v * sqrt(T));
+    double d1 = (log(S / K) + (r - q + 0.5 * v * v) * T) / (v * sqrt(T));
     // b not r in case of underlying is a commodity (and b is defined so != r), if not b = r
     double d2 = d1 - v * sqrt(T);
 
@@ -63,6 +66,14 @@ double BSPrice(double S, double K, double T, double r, double v, char optType, d
     else
         return -S * exp((b - r) * exp(-q * T) * CND(-d1) + K * exp(-r * T) * CND(-d2));
 }
+
+
+// ++ c >= max(S*exp(-q*T)-K*exp(-r*T),0)
+// ++ p >= max(-S*exp(-q*T)+K*exp(-r*T),0)
+// Parité Call/Put c+K*exp(-r*T) = p+S*exp(-q*T)
+
+
+
 
 // Black and Scholes Delta
 double BSDelta(double S, double K, double T, double r, double v, char optType, double q)
@@ -117,20 +128,21 @@ double BSTheta(double S, double K, double T, double r, double v, char optType, d
 }
 
 // Implied Volatility using the Newton-Raphson method
-double BSImplVol(double S, double K, double T, double r, double v, char optType, double q)
+double BSImplVol(double S, double K, double T, double r, char optType, double q, double cm)
 {
     const double epsilon = 0.00000001;
     // Manaster and Koehler seed value
     double vi = sqrt(fabs(log(S / K) + r * T) * 2 / T);
     double ci = BSPrice(S,K,T,r,vi,optType,q);
     double vegai = 100 * BSVega(S,K,T,r,vi,q);
-    double minDiff = fabs(v - ci); // cm <-> v
+    double minDiff = fabs(cm - ci); // cm <-> v
 
-    while (minDiff >= epsilon){
-        vi -= (ci - v) / vegai;
+    while (minDiff >= epsilon)
+    {
+        vi -= (ci - cm) / vegai; // cm <-> v
         ci = BSPrice(S,K,T,r,vi,optType,q);
         vegai = 100 * BSVega(S,K,T,r,vi,q);
-        minDiff = fabs(v - ci);
+        minDiff = fabs(cm - ci); // cm <-> v
     }
 
     if (minDiff < epsilon)
@@ -151,11 +163,13 @@ double BSImplVol2(double S, double K, double T, double r, double v, char optType
     while(1){
         cpTest = BSPrice(S,K,T,r,IV,optType,q);
 
-        if(cpTest > price){
+        if(cpTest > price)
+        {
             upper = IV;
             IV = (lower + upper) / 2;
         }
-        else{
+        else
+        {
             lower = IV;
             IV = (lower + upper) / 2;
         }
@@ -173,7 +187,8 @@ double BSImplVol3(double S, double K, double T, double r, double v, char optType
     const int maxIter = 10000;
     double vol_1 = v, price_1, vol_2, price_2, dx;
 
-    for (int i = 1; i < maxIter; i++) {
+    for (int i = 1; i < maxIter; ++i)
+    {
         price_1 = BSPrice(S, K, T, r, vol_1, optType,q);
         vol_2 = vol_1 - dVol;
         price_2 = BSPrice(S,K,T,r,vol_2, optType,q);
