@@ -33,7 +33,7 @@ double NDApprox::CND(double x) // Marsaglia (2004)
     double sum = x;
     double temp = x;
 
-    for(int i=1; i<=1000; i++){
+    for(int i=1; i<=1000; ++i){
         temp = (temp * x * x / (2 * i + 1));
         sum += temp;
     }
@@ -46,12 +46,12 @@ double NDApprox::CND(double x) // Marsaglia (2004)
         vector<double> X(n+1, 0.0);
         vector<double> Y(n+1, 0.0);
         double delta_x = (EndPoint - StartPoint)/double(n);
-        for (int i=0; i<=n; i++) {
+        for (int i=0; i<=n; ++i) {
             X[i] = StartPoint + i*delta_x;
             Y[i] = NDApprox::PDF(X[i]);
         }
         double sum = 0;
-        for (int t=0; t<=(n-1)/4; t++) {
+        for (int t=0; t<=(n-1)/4; ++t) {
             int ind = 4*t;
             sum += (1/45.0)*(14*Y[ind] + 64*Y[ind+1] + 24*Y[ind+2] + 64*Y[ind+3] + 14*Y[ind+4])*delta_x;
         }
@@ -101,14 +101,14 @@ double NDApprox::CND5(double x) // Double precision univariate normal function
     double y, Exponential, SumA, SumB;
     double result;
     y = fabs(x);
-    if (y > 37.0)
+    if(y > 37.0)
     {
         return 0.0;
     }
     else
     {
         Exponential = exp(-0.5 * y * y);
-        if (y < 7.07106781186547)
+        if(y < 7.07106781186547)
         {
             SumA = 3.52624965998911E-02 * y + 0.700383064443688;
             SumA = SumA * y + 6.37396220353165;
@@ -135,7 +135,7 @@ double NDApprox::CND5(double x) // Double precision univariate normal function
             result = Exponential / (SumA * 2.506628274631);
         }
 
-        if (x > 0) result = 1.0 - result;
+        if(x > 0) result = 1.0 - result;
         return result;
     }
 }
@@ -207,12 +207,12 @@ double NDApprox::CBND(double X, double y, double rho)
     W[10][3] = 0.152753387130726;
     XX[10][3] = -7.65265211334973E-02;
 
-    if (fabs(rho) < 0.3)
+    if(fabs(rho) < 0.3)
     {
         NG = 1;
         LG = 3;
     }
-    else if( fabs(rho) < 0.75)
+    else if (fabs(rho) < 0.75)
     {
         NG = 2;
         LG = 6;
@@ -229,15 +229,15 @@ double NDApprox::CBND(double X, double y, double rho)
     hk = h * k;
     BVN = 0.0;
 
-    if (fabs(rho) < 0.925)
+    if(fabs(rho) < 0.925)
     {
-        if (fabs(rho) > 0.0)
+        if(fabs(rho) > 0.0)
         {
             hs = (h * h + k * k) / 2.0;
             asr = ArcSin(rho);
-            for (i = 1; i <= LG; i++)
+            for(i = 1; i <= LG; ++i)
             {
-                for (ISs = -1; ISs <= 1; i = i + 2)
+                for(ISs = -1; ISs <= 1; i += 2)
                 {
                     sn = sin(asr * (ISs * XX[i][NG] + 1) / 2.0);
                     BVN = BVN + W[i][NG] * exp((sn * hk - hs) / (1.0 - sn * sn));
@@ -249,12 +249,12 @@ double NDApprox::CBND(double X, double y, double rho)
     }
     else
     {
-        if (rho < 0.0)
+        if(rho < 0.0)
         {
             k = -k;
             hk = -hk;
         }
-        if (fabs(rho) < 1.0)
+        if(fabs(rho) < 1.0)
         {
             Ass = (1.0 - rho) * (1.0 + rho);
             A = sqrt(Ass);
@@ -262,21 +262,21 @@ double NDApprox::CBND(double X, double y, double rho)
             c = (4 - hk) / 8.0;
             d = (12 - hk) / 16.0;
             asr = -1.0*(bs / Ass + hk) / 2.0;
-            if (asr > -100.0) BVN = A * exp(asr) * (1.0 - c * (bs - Ass) * (1.0 - d * bs / 5) / 3.0 + c * d * Ass * Ass / 5.0);
-            if (-hk < 100)
+            if(asr > -100.0) BVN = A * exp(asr) * (1.0 - c * (bs - Ass) * (1.0 - d * bs / 5) / 3.0 + c * d * Ass * Ass / 5.0);
+            if(-hk < 100)
             {
                 b = sqrt(bs);
                 BVN = BVN - exp(-hk / 2) * sqrt(2.0 * 3.141592653590) * CND(-b / A) * b * (1.0 - c * bs * (1.0 - d * bs / 5.0) / 3.0);
             }
             A = A / 2.0;
-            for(i = 1; i<= LG; i++)
+            for(i = 1; i<= LG; ++i)
             {
-                for( ISs = -1 ; ISs<=1; ISs = ISs+2)
+                for(ISs = -1 ; ISs<=1; ISs += 2)
                 {
                     xs = (A * (ISs * XX[i][NG] + 1.0)) * (A * (ISs * XX[i][NG] + 1.0));
                     rs = sqrt(1.0 - xs);
                     asr = -(bs / xs + hk) / 2.0;
-                    if( asr > -100)
+                    if(asr > -100)
                     {
                         BVN = BVN + A * W[i][NG] * exp(asr) * (exp(-hk * (1.0 - rs) / (2.0 * (1.0 + rs))) / rs - (1.0 + c * xs * (1.0 + d * xs)));
                     }
@@ -285,14 +285,14 @@ double NDApprox::CBND(double X, double y, double rho)
             BVN = -BVN / (2 * 3.141592653590);
         }
 
-        if (rho > 0.0)
+        if(rho > 0.0)
         {
             BVN = BVN + CND(-Max(h, k));
         }
         else
         {
             BVN = -BVN;
-            if (k > h) BVN = BVN + CND(k) - CND(h);
+            if(k > h) BVN = BVN + CND(k) - CND(h);
         }
     }
 
@@ -307,7 +307,7 @@ double NDApprox::CBND2(double A, double b, double rho)
     double X[5] = {0.018854042, 0.038088059, 0.0452707394, 0.038088059, 0.018854042};
     double y[5] = {0.04691008, 0.23076534, 0.5, 0.76923466, 0.95308992 };
     sum = 0.0;
-    for (int i = 0; i < 5; i++)
+    for(int i = 0; i < 5; ++i)
     {
         P = y[i] * rho;
         g = 1 - P * P;
@@ -330,12 +330,12 @@ double NDApprox::CBND3(double A, double b, double rho)
     b1 = b / sqrt(2.0 * (1.0 - rho * rho));
     double result=0.0;
 
-    if (A <= 0.0 && b <= 0.0 && rho <= 0.0)
+    if(A <= 0.0 && b <= 0.0 && rho <= 0.0)
     {
         sum = 0.0;
-        for( i = 0; i<5; i++)
+        for(i = 0; i<5; ++i)
         {
-            for(j=0; j<5; j++)
+            for(j=0; j<5; ++j)
             {
                 sum = sum + X[i] * X[j] * exp(a1 * (2.0 * y[i] - a1)
                                               + b1 * (2.0 * y[j] - b1) + 2.0 * rho * (y[i] - a1) * (y[j] - b1));
@@ -389,14 +389,14 @@ double NDApprox::CBND4(double A, double b, double rho)
 
     double result = 0.0;
 
-    if (fabs(rho) >= 0.7)
+    if(fabs(rho) >= 0.7)
     {
         r2 = 1.0 - rho * rho;
         r3 = sqrt(r2);
-        if( rho < 0.0) h2 = -h2;
+        if(rho < 0.0) h2 = -h2;
         h3 = h1 * h2;
         h7 = exp(-h3 / 2.0);
-        if (fabs(rho) < 1.0)
+        if(fabs(rho) < 1.0)
         {
             h6 = fabs(h1 - h2);
             h5 = h6 * h6 / 2.0;
@@ -404,12 +404,12 @@ double NDApprox::CBND4(double A, double b, double rho)
             AA = 0.5 - h3 / 8.0;
             ab = 3.0 - 2.0 * AA * h5;
             LH = 0.13298076 * h6 * ab * (1 - CND(h6)) - exp(-h5 / r2) * (ab + AA * r2) * 0.053051647;
-            for( i = 0 ; i<= 4;i++)
+            for(i = 0 ; i<= 4; ++i)
             {
                 r1 = r3 * X[i];
                 rr = r1 * r1;
                 r2 = sqrt(1 - rr);
-                if( h7 == 0)
+                if(h7 == 0)
                 {
                     h8 = 0;
                 }
@@ -430,9 +430,9 @@ double NDApprox::CBND4(double A, double b, double rho)
     else
     {
         h3 = h1 * h2;
-        if (rho != 0)
+        if(rho != 0)
         {
-            for( i = 0 ; i<= 4; i++)
+            for(i = 0 ; i<= 4; ++i)
             {
                 r1 = rho * X[i];
                 r2 = 1 - r1 * r1;
@@ -543,8 +543,6 @@ double NDApprox::CNDEV(double p)
         return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q /
                (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1.0);
 
-
     }
-
 
 }
