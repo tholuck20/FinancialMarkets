@@ -21,7 +21,9 @@
 
 #include "NDApprox.hpp"
 #include <cmath>
+#include <vector>
 
+using namespace std;
 
 double NDApprox::PDF(double x) // Probability Density Function
 {
@@ -40,23 +42,6 @@ double NDApprox::CND(double x) // Marsaglia (2004)
     return 0.5 + (sum / sqrt(2*PI)) * exp(-(x * x)/2);
 }
 
-    // Boole's Rule
-    double NDApprox::Boole(double StartPoint, double EndPoint, int n)
-    {
-        vector<double> X(n+1, 0.0);
-        vector<double> Y(n+1, 0.0);
-        double delta_x = (EndPoint - StartPoint)/double(n);
-        for (int i=0; i<=n; ++i) {
-            X[i] = StartPoint + i*delta_x;
-            Y[i] = NDApprox::PDF(X[i]);
-        }
-        double sum = 0;
-        for (int t=0; t<=(n-1)/4; ++t) {
-            int ind = 4*t;
-            sum += (1/45.0)*(14*Y[ind] + 64*Y[ind+1] + 24*Y[ind+2] + 64*Y[ind+3] + 14*Y[ind+4])*delta_x;
-        }
-        return sum;
-    }
 // N(0,1) cdf with Boole's Rule
 double NDApprox::CND2(double x)
 {
@@ -543,6 +528,8 @@ double NDApprox::CNDEV(double p)
         return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q /
                (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1.0);
 
+
     }
+
 
 }
