@@ -6,6 +6,7 @@
 
 #ifndef C_NDAPPROX_H
 #define C_NDAPPROX_H
+
 class NDApprox
 {
 
