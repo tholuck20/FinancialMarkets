@@ -2,11 +2,6 @@
 // Created by mneri092115 on 10/12/2015.
 //
 
-
-#include <vector>
-#include <cmath>
-using namespace std;
-
 #ifndef DERIVATIVES_BLACK_SCHOLES_H
 #define DERIVATIVES_BLACK_SCHOLES_H
 
@@ -35,17 +30,15 @@ double Boole(double StartPoint, double EndPoint, int n);
 // Standard normal Probability Density Function (PDF) = Densité de probabilité
 double pdf(double x);
 
-class BS {
 
-public:
     // Black and Scholes valuation
     double BSPrice(double S, double K, double T, double r, double v, char optType, double q = 0);
 
     // Black and Scholes implied volatility
-    double BSImplVol(double S, double K, double T, double r, double v, char optType, double q = 0);
-    double BSImplVol2(double S, double K, double T, double r, double v, char optType, double q = 0);
-    double BSImplVol3(double S, double K, double T, double r, double v, char optType, double q = 0);
-    double BSImplVol4(double S, double K, double T, double r, char optType, double b, double cm);
+    double BSImplVol(double S, double K, double T, double r, char optType, double q = 0, double cm = 0);
+    double BSImplVol2(double S, double K, double T, double r, char optType, double q = 0, double cm = 0);
+    double BSImplVol3(double S, double K, double T, double r, double v, char optType, double q = 0, double cm = 0);
+    double BSImplVol4(double S, double K, double T, double r, char optType, double q = 0, double cm = 0);
 
     // Black and Scholes Greeks
     double BSDelta(double S, double K, double T, double r, double v, char optType, double q = 0);
@@ -55,21 +48,13 @@ public:
     double BSTheta(double S, double K, double T, double r, double v, char optType, double q = 0);
     double BSVanna(double S, double K, double T, double r, double v, double q = 0, double b = 0); //////
     double BSCharm(double S, double K, double T, double r, double v, char optType, double q = 0, double b = 0); //////
-    double BSSpeed(double S, double K, double T, double r, double v, char optType);
-    double BSZomma(double S, double K, double T, double r, double v, char optType);
-    double BSColor(double S, double K, double T, double r, double v, char optType);
-    double BSdVega_dTime(double S, double K, double T, double r, double v, char optType);
-    double BSVomma(double S, double K, double T, double r, double v, char optType);
-    double BSDualDelta(double S, double K, double T, double r, double v, char optType);
-    double BSDualGamma(double S, double K, double T, double r, double v, char optType);
-
-
-
-};
-
-
-
-
+    double BSSpeed(double S, double K, double T, double r, double v, double q = 0);
+    double BSZomma(double S, double K, double T, double r, double v, double q = 0);
+    double BSColor(double S, double K, double T, double r, double v, double q = 0);
+    double BSdVega_dTime(double S, double K, double T, double r, double v, double q = 0);
+    double BSVomma(double S, double K, double T, double r, double v, double q = 0);
+    double BSDualDelta(double S, double K, double T, double r, double v, char optType, double q = 0);
+    double BSDualGamma(double S, double K, double T, double r, double v, double q = 0);
 
 
 #endif //DERIVATIVES_BLACK_SCHOLES_H
