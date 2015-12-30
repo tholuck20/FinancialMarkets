@@ -13,7 +13,7 @@
 
 using namespace std;
 
-// ###########################################################################################################
+//////////////////////////////////////////////////////// Price ////////////////////////////////////////////////////////
 // Créer plusieurs fonctions prenant en compte q (dividend), b (cost of carry)
 // Black and Scholes Price + Merton for dividend
 double BSPrice(double S, double K, double T, double r, double v, char optType, double q)
@@ -33,6 +33,32 @@ double BSPrice(double S, double K, double T, double r, double v, char optType, d
 // ++ c >= max(S*exp(-q*T)-K*exp(-r*T),0)
 // ++ p >= max(-S*exp(-q*T)+K*exp(-r*T),0)
 // Parité Call/Put c+K*exp(-r*T) = p+S*exp(-q*T)
+
+// BSPrice for FX Options with Garman-Kohlhagen moodel
+double BSGKPrice(double S, double K, double T, double rd, double rf, double v, double optType)
+{
+    double d1 = (log(S / K) + (rd - rf + 0.5 * v * v) * T) / (v * sqrt(T));
+    double d2 = d1 - v * sqrt(T);
+
+    if (optType == 'C')
+        return S * exp(-rf * T) * NDApprox::CND(d1) - K * exp(-rd * T) * NDApprox::CND(d2);
+    else
+        return -S * exp(-rf * T) * NDApprox::CND(-d1) + K * exp(-rd * T) * NDApprox::CN(-d2);
+}
+
+// BSPrice for options on futures with Black-76 model
+double Black76Price(double F, double K, double T, double r, double v, char optType)
+{
+    double d1 = (log(F / K) + (r - q + 0.5 * v * v) * T) / (v * sqrt(T));
+    double d2 = d1 - v * sqrt(T);
+
+    if (optType == 'C')
+        return exp(-r * T) * (F * NDApprox::CND(d1) - K * NDApprox::CND(d2));
+    else
+        return exp(-r * T) * (-F * NDApprox::CND(-d1) - K * NDApprox::CND(-d2));
+}
+
+//////////////////////////////////////////////////////// Greeks ////////////////////////////////////////////////////////
 
 // Black and Scholes Delta
 double BSDelta(double S, double K, double T, double r, double v, char optType, double q)
@@ -88,7 +114,7 @@ double BSTheta(double S, double K, double T, double r, double v, char optType, d
                     v * NDApprox::PDF(-d2) / 2 * sqrt(T));
 }
 
-// Implied Volatility using the Newton-Raphson method
+// Implied Volatility using the Newton-Raphson method for European options
 double BSImplVol(double S, double K, double T, double r, char optType, double q, double cm)
 {
     const double epsilon = 0.00000001;
@@ -162,6 +188,7 @@ double BSImplVol3(double S, double K, double T, double r, double v, char optType
     return vol_1;
 }
 
+//Implied Volatility using Bisection for European options
 double BSImplVol4(double S, double K, double T, double r, char optType, double q, double cm)
 {
     double vLow, vHigh, vi;
