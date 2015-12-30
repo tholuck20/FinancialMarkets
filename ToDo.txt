@@ -1,15 +1,10 @@
 C++
 
-Black & Scholes:
-double BSVanna(double S, double K, double T, double r, double v, char OpType);
-double BSCharm(double S, double K, double T, double r, double v, char OpType);
-double BSSpeed(double S, double K, double T, double r, double v, char OpType);
-double BSZomma(double S, double K, double T, double r, double v, char OpType);
-double BSColor(double S, double K, double T, double r, double v, char OpType);
-double BSdVega_dTime(double S, double K, double T, double r, double v, char OpType);
-double BSVomma(double S, double K, double T, double r, double v, char OpType);
-double BSDualDelta(double S, double K, double T, double r, double v, char OpType);
-double BSDualGamma(double S, double K, double T, double r, double v, char OpType);
+American Options:
+Perpetual puts and calls (http://finance.bi.no/~bernt/gcc_prog/recipes/recipes/img186.png)
+
+Roll-Geske-Whaley american option with stock paying fix dividend (http://finance.bi.no/~bernt/gcc_prog/recipes/recipes/img178.png)
+
 
 Bonds Options:
 // BlackBondOpt(BondLife,Coupon,Princ,Frequ,K,T,vol,IsCall,IsQuoted,Zeros,Result)
