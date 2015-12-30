@@ -33,6 +33,15 @@ double pdf(double x);
 
     // Black and Scholes valuation
     double BSPrice(double S, double K, double T, double r, double v, char optType, double q = 0);
+    // BSPrice for FX Options with Garman-Kohlhagen moodel
+    double BSGarmanKohlhagen(double S, double K, double T, double rd, double rf, double v, double optType);
+            // Foreign risk free rate can be interpreted as a dividend rate
+    // BSPrice for options on futures with Black-76 model
+    double Black76Price(double F, double K, double T, double r, double v, char optType);
+
+
+
+
 
     // Black and Scholes implied volatility
     double BSImplVol(double S, double K, double T, double r, char optType, double q = 0, double cm = 0);
@@ -55,6 +64,14 @@ double pdf(double x);
     double BSVomma(double S, double K, double T, double r, double v, double q = 0);
     double BSDualDelta(double S, double K, double T, double r, double v, char optType, double q = 0);
     double BSDualGamma(double S, double K, double T, double r, double v, double q = 0);
+
+
+
+
+
+
+
+
 
 
 #endif //DERIVATIVES_BLACK_SCHOLES_H
