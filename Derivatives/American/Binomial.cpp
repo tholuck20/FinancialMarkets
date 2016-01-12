@@ -115,23 +115,22 @@ double Binomial(double S, double K, double T, double r, double v, char optType, 
     return values[0];
 }
 
-double LRBinomial(double S, double K, double T, double r, double v, char optType, char optStyle, int Method)
-{
+double LRBinomial(double S, double K, double T, double r, double v, char optType, char optStyle, int Method) {
     NDApprox::Sign(x);
 
-    int n = 100;					// Number of steps
-    if (n % 2 == 0)					// Use only odd number of steps
-        n = n+1;
+    int n = 100;                    // Number of steps
+    if (n % 2 == 0)                    // Use only odd number of steps
+        n = n + 1;
 
-    vector<vector<double> >  S(n+1, vector<double>(n+1,0));		// Vectors for calls and puts
-    vector<vector<double> > EC(n+1, vector<double>(n+1,0));     // European Call
-    vector<vector<double> > EP(n+1, vector<double>(n+1,0));     // European Put
-    vector<vector<double> > AC(n+1, vector<double>(n+1,0));     // American Call
-    vector<vector<double> > AP(n+1, vector<double>(n+1,0));     // American Put
+    vector <vector<double>> S(n + 1, vector<double>(n + 1, 0));        // Vectors for calls and puts
+    vector <vector<double>> EC(n + 1, vector<double>(n + 1, 0));     // European Call
+    vector <vector<double>> EP(n + 1, vector<double>(n + 1, 0));     // European Put
+    vector <vector<double>> AC(n + 1, vector<double>(n + 1, 0));     // American Call
+    vector <vector<double>> AP(n + 1, vector<double>(n + 1, 0));     // American Put
 
     double d1 = (log(S / K) + (r + 0.5 * v * v) * T) / v / sqrt(T);
     double d2 = d2 = d1 - v * sqrt(T);
-    double u_n = exp( v * sqrt(T / n));
+    double u_n = exp(v * sqrt(T / n));
     double d_n = exp(-v * sqrt(T / n));
     double r_n = exp(r * T / n);
 
@@ -147,7 +146,7 @@ double LRBinomial(double S, double K, double T, double r, double v, char optType
     // Build the binomial tree
     for (int j = 0; j <= n; ++j) {
         for (int i = 0; i <= j; ++i) {
-            S[i][j] = Spot*pow(u,j-i)*pow(d,i);
+            S[i][j] = Spot * pow(u, j - i) * pow(d, i);
         }
     }
     // Compute terminal payoffs
@@ -158,26 +157,29 @@ double LRBinomial(double S, double K, double T, double r, double v, char optType
         AP[i][n] = max(K - S[i][n], 0.0);
     }
     // Backward recursion through the tree
-    for (int  j = n - 1; j >= 0; --j) {
+    for (int j = n - 1; j >= 0; --j) {
         for (int i = 0; i <= j; ++i) {
-            EC[i][j] = exp(-r * T / n) * (p * EC[i][j+1] + (1-p) * EC[i+1][j+1]);
-            EP[i][j] = exp(-r * T / n) * (p * EP[i][j+1] + (1-p) * EP[i+1][j+1]);
-            AC[i][j] = max(S[i][j] - K, exp(-r * T / n) * (p * AC[i][j+1] + (1-p) * AC[i+1][j+1]));
-            AP[i][j] = max(K - S[i][j], exp(-r * T / n) * (p * AP[i][j+1] + (1-p) * AP[i+1][j+1]));
+            EC[i][j] = exp(-r * T / n) * (p * EC[i][j + 1] + (1 - p) * EC[i + 1][j + 1]);
+            EP[i][j] = exp(-r * T / n) * (p * EP[i][j + 1] + (1 - p) * EP[i + 1][j + 1]);
+            AC[i][j] = max(S[i][j] - K, exp(-r * T / n) * (p * AC[i][j + 1] + (1 - p) * AC[i + 1][j + 1]));
+            AP[i][j] = max(K - S[i][j], exp(-r * T / n) * (p * AP[i][j + 1] + (1 - p) * AP[i + 1][j + 1]));
         }
     }
-    // Output of prices of calls and puts
-    cout << "The Leisen-Reimer prices using " << n << " steps are... " << endl;
-    cout << "European Call " << EC[0][0] << endl;
-    cout << "European Put  " << EP[0][0] << endl;
-    cout << "American Call " << AC[0][0] << endl;
-    cout << "American Put  " << AP[0][0] << endl;
-    cout << endl;
-    return 0;
+
+
+    // optType, optStyle
+
+    if (optStyle == 'E')
+        if (optType == 'C')
+            return EC[0][0]; // European Call
+        else
+            return EP[0][0]; // European Put
+    else if (optStyl == 'A')
+        if (optType == 'C')
+            return AC[0][0]; // American Call
+        else
+            return AP[0][0]; // American Put
 }
-
-
-
 
 
 
@@ -189,3 +191,12 @@ double FlexBinomial(double S, double K, double T, double r, double v, char optTy
 
 }
 
+double TianFlexBinomial(double S, double K, double T, double r, double v, char optType, char optStyle)
+{
+
+}
+
+double CRRBinomial(double S, double K, double T, double r, double v, char optType, char optStyle)
+{
+
+}
