@@ -28,6 +28,10 @@ public:
     static double CBNDGeneral(int TypeFlag, double X, double y, double rho);
     static double CNDEV(double p);
 
+    static double Sign(double x)
+    {
+        return (x<0.0) ? -1.0 : 1.0;
+    }
 
 private:
 
@@ -68,11 +72,6 @@ private:
             return 0.0;
         }
         return Factorial(n) / (Factorial(r) * Factorial(n - r));
-    }
-
-    static double Sign(double x)
-    {
-        return (x<0.0) ? -1.0 : 1.0;
     }
 
 };
