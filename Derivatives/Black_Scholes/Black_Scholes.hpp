@@ -2,8 +2,8 @@
 // Created by mneri092115 on 10/12/2015.
 //
 
-#ifndef DERIVATIVES_BLACK_SCHOLES_H
-#define DERIVATIVES_BLACK_SCHOLES_H
+#ifndef DERIVATIVES_BLACK_SCHOLES_HPP
+#define DERIVATIVES_BLACK_SCHOLES_HPP
 
 // Tools
 /* As N is a density (integral), we can use several methods to approximate the function:
@@ -20,16 +20,6 @@
  Which one is the most appropriate to approximate the Standard normal Cumulative distribution function (CDF)?
  *
 */
-// Standard normal Cumulative distribution function (CDF) = Fonction de répartition
-// Also known as NDF: Normal Distribution Function
-double N1(double x);
-double N2(double x);
-double N3(double x); // N1 = 34 at 9 numbers after the decimal point
-double Boole(double StartPoint, double EndPoint, int n);
-
-// Standard normal Probability Density Function (PDF) = Densité de probabilité
-double pdf(double x);
-
 
     // Black and Scholes valuation
     double BSPrice(double S, double K, double T, double r, double v, char optType, double q = 0);
@@ -38,7 +28,8 @@ double pdf(double x);
             // Foreign risk free rate can be interpreted as a dividend rate
     // BSPrice for options on futures with Black-76 model
     double Black76Price(double F, double K, double T, double r, double v, char optType);
-
+    // BSPrice for commodity options
+    double CBSPRice(double S, double K, double T, double r, double v, char optType, double b = 0);
 
 
 
@@ -65,13 +56,4 @@ double pdf(double x);
     double BSDualDelta(double S, double K, double T, double r, double v, char optType, double q = 0);
     double BSDualGamma(double S, double K, double T, double r, double v, double q = 0);
 
-
-
-
-
-
-
-
-
-
-#endif //DERIVATIVES_BLACK_SCHOLES_H
+#endif //DERIVATIVES_BLACK_SCHOLES_HPP
