@@ -34,7 +34,7 @@ double BSPrice(double S, double K, double T, double r, double v, char optType, d
 // ++ p >= max(-S*exp(-q*T)+K*exp(-r*T),0)
 // Parité Call/Put c+K*exp(-r*T) = p+S*exp(-q*T)
 
-// BSPrice for FX Options with Garman-Kohlhagen moodel
+// BSPrice for FX Options with Garman-Kohlhagen model
 double BSGKPrice(double S, double K, double T, double rd, double rf, double v, double optType)
 {
     double d1 = (log(S / K) + (rd - rf + 0.5 * v * v) * T) / (v * sqrt(T));
@@ -43,19 +43,31 @@ double BSGKPrice(double S, double K, double T, double rd, double rf, double v, d
     if (optType == 'C')
         return S * exp(-rf * T) * NDApprox::CND(d1) - K * exp(-rd * T) * NDApprox::CND(d2);
     else
-        return -S * exp(-rf * T) * NDApprox::CND(-d1) + K * exp(-rd * T) * NDApprox::CN(-d2);
+        return -S * exp(-rf * T) * NDApprox::CND(-d1) + K * exp(-rd * T) * NDApprox::CND(-d2);
 }
 
 // BSPrice for options on futures with Black-76 model
-double Black76Price(double F, double K, double T, double r, double v, char optType)
+double Black76(double F, double K, double T, double r, double v, char optType)
 {
-    double d1 = (log(F / K) + (r - q + 0.5 * v * v) * T) / (v * sqrt(T));
+    double d1 = (log(F / K) + (0.5 * v * v) * T) / (v * sqrt(T));
     double d2 = d1 - v * sqrt(T);
 
     if (optType == 'C')
         return exp(-r * T) * (F * NDApprox::CND(d1) - K * NDApprox::CND(d2));
     else
         return exp(-r * T) * (-F * NDApprox::CND(-d1) - K * NDApprox::CND(-d2));
+}
+
+// BSPrice for commodity options
+double CBSPRice(double S, double K, double T, double r, double v, char optType, double b)
+{
+    double d1 = (log(S / K) + (b + 0.5 * v * v) * T) / (v * sqrt(T));
+    double d2 = d1 - v * sqrt(T);
+
+    if (optType == 'C')
+        return S * exp((b - r) * T) * NDApprox::CND(d1) - K * exp(-r * T) * NDApprox::CND(d2);
+    else
+        return -S * exp((b - r) * T) * NDApprox::CND(-d1) + K * exp(-r * T) * NDApprox::CND(-d2);
 }
 
 //////////////////////////////////////////////////////// Greeks ////////////////////////////////////////////////////////
@@ -263,7 +275,7 @@ double BSZomma(double S, double K, double T, double r, double v, double q)
     //return exp(-q * T) * NDApprox::PDF(d1) * (d1 * d2 -1) / (S * v * v * sqrt(T));
 }
 
-double BSColor(double S, double K, double T, double r, double v, char optType)
+double BSColor(double S, double K, double T, double r, double v, double q)
 {
     double d1 = (log(S / K) + (r - q + 0.5 * v * v) * T) / (v * sqrt(T));
     double d2 = d1 - v * sqrt(T);
@@ -314,31 +326,62 @@ double BSDualGamma(double S, double K, double T, double r, double v, double q)
 
 
 
-
-
 int main()
 {
     double S = 30;
+    double F = 30;
     double K = 35;
-    double r = 0.05;
     double T = 1;
+    double r = 0.05;
+    double rf = 0.02;
+    double rd = 0.05;
     double v = 0.25;
     double q = 0.00;
-    double cm = 2.36;
+    double b = 0.00;
+    double cm = 2.76;
     char optType = 'C';
+    char optType2 = 'P';
 
-    cout << "Call B&S Price = " << fixed << setprecision(10) << BSPrice(S,K,T,r,v,optType,q) << endl << endl;
+    cout << "EC Black&Scholes Price = " << fixed << setprecision(5) << BSPrice(S,K,T,r,v,optType,q) << endl;
+    cout << "EP Black&Scholes Price = " << BSPrice(S,K,T,r,v,optType2,q) << endl;
+    cout << "EC FX Price = " << BSGKPrice(S,K,T,rd,rf,v,optType) << endl;
+    cout << "EP FX Price = " << BSGKPrice(S,K,T,rd,rf,v,optType2) << endl;
+    cout << "EC Futures Price = " << Black76(F,K,T,r,v,optType) << endl;
+    cout << "EP Futures Price = " << Black76(F,K,T,r,v,optType2) << endl;
+    cout << "EC CTY Price = " << CBSPRice(S,K,T,r,v,optType,b) << endl;
+    cout << "EP CTY Price = " << CBSPRice(S,K,T,r,v,optType2,b) << endl << endl;
 
-    cout << "Delta Call B&S = " << fixed << setprecision(10) << BSDelta(S,K,T,r,v,optType,q) << endl << endl;
+    cout << "Implied Volatility = " << BSImplVol(S,K,T,r,optType,q,cm) << endl;
+    cout << "Implied Volatility 2 = " << BSImplVol2(S,K,T,r,optType,q,cm) << endl;
+    cout << "Implied Volatility 3 = " << BSImplVol3(S,K,T,r,v,optType,q,cm) << endl;
+    cout << "Implied Volatility 4 = " << BSImplVol4(S,K,T,r,optType,q,cm) << endl << endl;
 
-    cout << "Theta Call B&S = " << fixed << setprecision(10) << BSTheta(S,K,T,r,v,optType,q) << " per year" << endl;
-    cout << "Theta Call B&S = " << fixed << setprecision(10) << BSTheta(S,K,T,r,v,optType,q)/365 << " per day" << endl;
+    cout << "Delta Call B&S = " << BSDelta(S,K,T,r,v,optType,q) << endl;
+    cout << "Delta Put B&S = " << BSDelta(S,K,T,r,v,optType2,q) << endl << endl;
 
-    cout << "Implied Volatility = " << fixed << setprecision(10) << BSImplVol(S,K,T,r,optType,q,cm);
+    cout << "Gamma B&S = " << BSGamma(S,K,T,r,v,q) << endl;
+    cout << "Vega B&S = " << BSVega(S,K,T,r,v,q) << endl<< endl;
+
+    cout << "Rho Call B&S = " << BSRho(S,K,T,r,v,optType,q) << endl;
+    cout << "Rho Put B&S = " << BSRho(S,K,T,r,v,optType2,q) << endl << endl;
+
+    cout << "Theta Call B&S = " << BSTheta(S,K,T,r,v,optType,q) << " per year" << endl;
+    cout << "Theta Call B&S = " << BSTheta(S,K,T,r,v,optType,q)/365 << " per day" << endl;
+    cout << "Theta Put B&S = " << BSTheta(S,K,T,r,v,optType2,q) << " per year" << endl;
+    cout << "Theta Put B&S = " << BSTheta(S,K,T,r,v,optType2,q)/365 << " per day" << endl << endl;
+
+    cout << "Vanna B&S = " << BSVanna(S,K,T,r,v,q,b) << endl<< endl;
+    cout << "Charm Call B&S = " << BSCharm(S,K,T,r,v,optType,q,b) << endl;
+    cout << "Charm Put B&S = " << BSCharm(S,K,T,r,v,optType2,q,b) << endl<< endl;
+    cout << "Speed B&S = " << BSSpeed(S,K,T,r,v,q) << endl;
+    cout << "Zomma B&S = " << BSZomma(S,K,T,r,v,q) << endl;
+    cout << "Color B&S = " << BSColor(S,K,T,r,v,q) << endl;
+    cout << "dVega_dTime B&S = " << BSdVega_dTime(S,K,T,r,v,q) << endl;
+    cout << "Vomma B&S = " << BSVomma(S,K,T,r,v,q) << endl << endl;
+
+    cout << "DualDelta Call B&S = " << BSDualDelta(S,K,T,r,v,optType,q) << endl;
+    cout << "DualDelta Put B&S = " << BSDualDelta(S,K,T,r,v,optType2,q) << endl << endl;
+
+    cout << "DualGamma B&S = " << BSDualGamma(S,K,T,r,v,q) << endl;
+
 }
-
-
-
-
-
-
