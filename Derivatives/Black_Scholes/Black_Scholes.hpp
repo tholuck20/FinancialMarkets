@@ -24,10 +24,10 @@
     // Black and Scholes valuation
     double BSPrice(double S, double K, double T, double r, double v, char optType, double q = 0);
     // BSPrice for FX Options with Garman-Kohlhagen moodel
-    double BSGarmanKohlhagen(double S, double K, double T, double rd, double rf, double v, double optType);
+    double BSGKPrice(double S, double K, double T, double rd, double rf, double v, double optType);
             // Foreign risk free rate can be interpreted as a dividend rate
     // BSPrice for options on futures with Black-76 model
-    double Black76Price(double F, double K, double T, double r, double v, char optType);
+    double Black76(double F, double K, double T, double r, double v, char optType);
     // BSPrice for commodity options
     double CBSPRice(double S, double K, double T, double r, double v, char optType, double b = 0);
 
