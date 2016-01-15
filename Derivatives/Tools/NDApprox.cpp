@@ -30,6 +30,11 @@ double NDApprox::PDF(double x) // Probability Density Function
     return exp(-0.5 * x * x) / sqrt(2 * PI);
 }
 
+double NDApprox::ND(double x) // Normal Distribution Function (for easier use in future code)
+{
+    return exp(-0.5 * x * x) / sqrt(2 * PI);
+}
+
 double NDApprox::CND(double x) // Marsaglia (2004)
 {
     double sum = x;
@@ -56,7 +61,7 @@ double NDApprox::CND3(double x) // Abramowitz and Stegun
     const double a5 = 1.330274429;
 
     double Q = 1.00 / (1.00 + b * fabs(x));
-    double R = NDApprox::PDF(x); (1.00 / sqrt(2 * PI) *exp(-0.50 * x * x));
+    double R = NDApprox::PDF(x);
 
     double CND = R * (Q * (a1 + Q * (-a2 + Q * (a3 + Q * (-a4 + Q * a5)))));
 
@@ -66,17 +71,17 @@ double NDApprox::CND3(double x) // Abramowitz and Stegun
         return 1-CND;
 }
 
-double NDApprox::CND4(double z) // Shore (2005)
+double NDApprox::CND4(double x) // Shore (2005)
 {
     const double L = -0.61228883; const double A = -6.37309208;
     const double S1 = -0.11105481; const double S2 = 0.44334159;
 
     double tempA = A/(L/S1);
-    double tempB = (pow(1 + S1 * z, L / S1) - 1);
-    double tempB_ = (pow(1 + S1 * (-z), L / S1) - 1);
+    double tempB = (pow(1 + S1 * x, L / S1) - 1);
+    double tempB_ = (pow(1 + S1 * (-x), L / S1) - 1);
 
-    double g = exp(-log(2) * exp(tempA * tempB + S2 * z)); // g(z)
-    double g_ = exp(-log(2) * exp(tempA * tempB_ + S2 * (-z))); // g(-z)
+    double g = exp(-log(2) * exp(tempA * tempB + S2 * x)); // g(z)
+    double g_ = exp(-log(2) * exp(tempA * tempB_ + S2 * (-x))); // g(-z)
 
     return 0.5 * (1 + g_ - g);
 }
@@ -125,7 +130,6 @@ double NDApprox::CND5(double x) // Double precision univariate normal function
     }
 }
 
-
 double NDApprox::BND(double X, double y, double rho)
 {
     return 1.0 / (2.0 * PI * sqrt(1.0 - rho * rho)) * \
@@ -141,7 +145,7 @@ double NDApprox::CBND(double X, double y, double rho)
     //      On the computation of the bivariate normal integral,
     //      Journal of Statist. Comput. Simul. 35, pp. 101-107,
     //  with major modifications for double precision, and for |R| close to 1.
-    // Code originally transelated into VBA by Graeme West
+    // Code originally translated into VBA by Graeme West
     int i, ISs, LG, NG;
     //Dim XX(10, 3) As Double, W(10, 3) As Double
     double XX[11][4];
@@ -192,18 +196,15 @@ double NDApprox::CBND(double X, double y, double rho)
     W[10][3] = 0.152753387130726;
     XX[10][3] = -7.65265211334973E-02;
 
-    if(fabs(rho) < 0.3)
-    {
+    if(fabs(rho) < 0.3) {
         NG = 1;
         LG = 3;
     }
-    else if (fabs(rho) < 0.75)
-    {
+    else if (fabs(rho) < 0.75) {
         NG = 2;
         LG = 6;
     }
-    else
-    {
+    else {
         NG = 3;
         LG = 10;
     }
@@ -228,7 +229,7 @@ double NDApprox::CBND(double X, double y, double rho)
                     BVN = BVN + W[i][NG] * exp((sn * hk - hs) / (1.0 - sn * sn));
                 }
             }
-            BVN = BVN * asr / (4.0 * 3.141592653590);
+            BVN = BVN * asr / (4.0 * PI);
         }
         BVN = BVN + CND(-h) * CND(-k);
     }
@@ -251,7 +252,7 @@ double NDApprox::CBND(double X, double y, double rho)
             if(-hk < 100)
             {
                 b = sqrt(bs);
-                BVN = BVN - exp(-hk / 2) * sqrt(2.0 * 3.141592653590) * CND(-b / A) * b * (1.0 - c * bs * (1.0 - d * bs / 5.0) / 3.0);
+                BVN = BVN - exp(-hk / 2) * sqrt(2.0 * PI) * CND(-b / A) * b * (1.0 - c * bs * (1.0 - d * bs / 5.0) / 3.0);
             }
             A = A / 2.0;
             for(i = 1; i<= LG; ++i)
@@ -267,7 +268,7 @@ double NDApprox::CBND(double X, double y, double rho)
                     }
                 }
             }
-            BVN = -BVN / (2 * 3.141592653590);
+            BVN = -BVN / (2 * PI);
         }
 
         if(rho > 0.0)
@@ -285,23 +286,20 @@ double NDApprox::CBND(double X, double y, double rho)
     return BVN; //CBND = BVN
 }
 
-double NDApprox::CBND2(double A, double b, double rho)
+double NDApprox::CBND2(double X, double y, double rho)
 {
     double g, P, sum;
 
-    double X[5] = {0.018854042, 0.038088059, 0.0452707394, 0.038088059, 0.018854042};
-    double y[5] = {0.04691008, 0.23076534, 0.5, 0.76923466, 0.95308992 };
+    double A[5] = {0.018854042, 0.038088059, 0.0452707394, 0.038088059, 0.018854042};
+    double b[5] = {0.04691008, 0.23076534, 0.5, 0.76923466, 0.95308992};
     sum = 0.0;
     for(int i = 0; i < 5; ++i)
     {
-        P = y[i] * rho;
+        P = b[i] * rho;
         g = 1 - P * P;
-        sum = sum + X[i] * exp(0.5 * (2.0 * A * b * P - A * A - b * b) / g) / sqrt(g);
-
+        sum += A[i] * exp(0.5 * (2.0 * X * y * P - X * X - y * y) / g) / sqrt(g);
     }
-
-    return rho * sum + CND(A) * CND(b);
-
+    return rho * sum + CND(X) * CND(y);
 }
 
 double NDApprox::CBND3(double A, double b, double rho)
@@ -446,47 +444,17 @@ double NDApprox::CBNDGeneral(int TypeFlag, double X, double y, double rho)
         default:
             return CBND(X, y, rho);
     }
-
 }
 
 double NDApprox::CNDEV(double p)
 {
-    double a[6] =
-            {
-                    -3.969683028665376e+01,
-                    2.209460984245205e+02,
-                    -2.759285104469687e+02,
-                    1.383577518672690e+02,
-                    -3.066479806614716e+01,
-                    2.506628277459239e+00
-            };
-
-    double b[5] =
-            {
-                    -5.447609879822406e+01,
-                    1.615858368580409e+02,
-                    -1.556989798598866e+02,
-                    6.680131188771972e+01,
-                    -1.328068155288572e+01
-            };
-
-    double c[6] =
-            {
-                    -7.784894002430293e-03,
-                    -3.223964580411365e-01,
-                    -2.400758277161838e+00,
-                    -2.549732539343734e+00,
-                    4.374664141464968e+00,
-                    2.938163982698783e+00
-            };
-
-    double d[4] =
-            {
-                    7.784695709041462e-03,
-                    3.224671290700398e-01,
-                    2.445134137142996e+00,
-                    3.754408661907416e+00
-            };
+    double a[6] = {-39.69683028665376, 220.9460984245205, -275.9285104469687, 138.3577518672690,
+                    -30.66479806614716, 2.506628277459239};
+    double b[5] = {-54.47609879822406, 161.5858368580409, -155.6989798598866, 66.80131188771972,
+                    -13.28068155288572e};
+    double c[6] = {-7.784894002430293e-03, -0.3223964580411365, -2.400758277161838, -2.549732539343734,
+                    4.374664141464968, 2.938163982698783};
+    double d[4] = {7.784695709041462e-03, 0.3224671290700398, 2.445134137142996, 3.754408661907416};
 
     double LOW = 0.02425;
     double HIGH = 0.97575;
