@@ -13,6 +13,7 @@ class NDApprox
 public:
     //distributions
     static double PDF(double x); // Probability Density Function (= Normal Distribution Function)
+    static double ND(double x); // Normal Distribution Function (=PDF)
     static double CND(double x); // Marsaglia (2004)
     static double CND2(double x); // From volopta.com
     static double Boole(double StartPoint, double EndPoint, int n);
@@ -73,6 +74,7 @@ private:
         }
         return Factorial(n) / (Factorial(r) * Factorial(n - r));
     }
+
 
 };
 
