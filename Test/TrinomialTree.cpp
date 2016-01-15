@@ -1,12 +1,7 @@
 
 // Trinomial Tree
 
-// by Fabrice Douglas Rouah, FRouah.com and Volopta.com
-
-
-
 #include "StdAfx.h"
-
 #include "TrinomialTree.h"
 
 
