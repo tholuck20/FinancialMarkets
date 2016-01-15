@@ -82,7 +82,7 @@ End Function
 Function CND3(x As Double) As Double 'Abramowitz and Stegun
 'Same as CND for 7 decimals
 
-Dim Q, R As Double
+Dim q, r As Double
 
 Const b = 0.2316419
 Const a1 = 0.31938153
@@ -91,10 +91,10 @@ Const a3 = 1.781477937
 Const a4 = 1.821255978
 Const a5 = 1.330274429
 
-Q = 1# / (1# + b * Abs(x))
-R = NormDist.PDF(x)
+q = 1# / (1# + b * Abs(x))
+r = NormDist.PDF(x)
 
-CND3 = R * (Q * (a1 + Q * (-a2 + Q * (a3 + Q * (-a4 + Q * a5)))))
+CND3 = r * (q * (a1 + q * (-a2 + q * (a3 + q * (-a4 + q * a5)))))
 
 If x > 0 Then CND3 = 1 - CND3
 
@@ -106,11 +106,11 @@ Function CND4(x As Double) As Double  'Shore (2005)
 Dim tempA, tempB, tempB_, g, g_ As Double
 
 Const L = -0.61228883
-Const A = -6.37309208
+Const a = -6.37309208
 Const S1 = -0.11105481
 Const S2 = 0.44334159
 
-tempA = A / (L / S1)
+tempA = a / (L / S1)
 tempB = (1 + S1 * x) ^ (L / S1) - 1
 tempB_ = (1 + S1 * (-x)) ^ (L / S1) - 1
 
@@ -185,7 +185,7 @@ Public Function CBND(x As Double, y As Double, rho As Double) As Double
 Dim i As Integer, ISs As Integer, LG As Integer, NG As Integer
 Dim XX(10, 3) As Double, W(10, 3) As Double
 Dim h As Double, k As Double, hk As Double, hs As Double, BVN As Double, Ass As Double, asr As Double, sn As Double
-Dim A As Double, b As Double, bs As Double, c As Double, d As Double
+Dim a As Double, b As Double, bs As Double, c As Double, d As Double
 Dim xs As Double, rs As Double
 
 W(1, 1) = 0.17132449237917
@@ -265,24 +265,24 @@ Else
   End If
   If Abs(rho) < 1 Then
     Ass = (1 - rho) * (1 + rho)
-    A = Sqr(Ass)
+    a = Sqr(Ass)
     bs = (h - k) ^ 2
     c = (4 - hk) / 8
     d = (12 - hk) / 16
     asr = -(bs / Ass + hk) / 2
-    If asr > -100 Then BVN = A * Exp(asr) * (1 - c * (bs - Ass) * (1 - d * bs / 5) / 3 + c * d * Ass * Ass / 5)
+    If asr > -100 Then BVN = a * Exp(asr) * (1 - c * (bs - Ass) * (1 - d * bs / 5) / 3 + c * d * Ass * Ass / 5)
     If -hk < 100 Then
       b = Sqr(bs)
-      BVN = BVN - Exp(-hk / 2) * Sqr(2 * PI) * NormDist.CND(-b / A) * b * (1 - c * bs * (1 - d * bs / 5) / 3)
+      BVN = BVN - Exp(-hk / 2) * Sqr(2 * PI) * NormDist.CND(-b / a) * b * (1 - c * bs * (1 - d * bs / 5) / 3)
     End If
-    A = A / 2
+    a = a / 2
     For i = 1 To LG
       For ISs = -1 To 1 Step 2
-        xs = (A * (ISs * XX(i, NG) + 1)) ^ 2
+        xs = (a * (ISs * XX(i, NG) + 1)) ^ 2
         rs = Sqr(1 - xs)
         asr = -(bs / xs + hk) / 2
         If asr > -100 Then
-           BVN = BVN + A * W(i, NG) * Exp(asr) * (Exp(-hk * (1 - rs) / (2 * (1 + rs))) / rs - (1 + c * xs * (1 + d * xs)))
+           BVN = BVN + a * W(i, NG) * Exp(asr) * (Exp(-hk * (1 - rs) / (2 * (1 + rs))) / rs - (1 + c * xs * (1 + d * xs)))
         End If
       Next ISs
     Next i
@@ -301,27 +301,25 @@ End Function
 
 Function CBND2(x As Double, y As Double, rho As Double) As Double 'Cumulative Bivariate Normal Distribution
 
-Dim g As Double, P As Double, sum As Double
-Dim A As Variant, b As Variant
+Dim g As Double, p As Double, sum As Double
+Dim a As Variant, b As Variant
 
-A = Array(0.018854042, 0.038088059, 0.0452707394, 0.038088059, 0.018854042)
+a = Array(0.018854042, 0.038088059, 0.0452707394, 0.038088059, 0.018854042)
 b = Array(0.04691008, 0.23076534, 0.5, 0.76923466, 0.95308992)
 
 sum = 0#
 
 For i = 0 To 4
-    P = b(i) * rho
-    g = 1 - P * P
-    sum = sum + A(i) * Exp(0.5 * (2# * x * y * P - x * x - y * y) / g) / Sqr(g)
+    p = b(i) * rho
+    g = 1 - p * p
+    sum = sum + a(i) * Exp(0.5 * (2# * x * y * p - x * x - y * y) / g) / Sqr(g)
 Next i
 
 CBND2 = rho * sum + NormDist.CND(x) * NormDist.CND(y)
 
-
-
 End Function
 
-Public Function CBND3(A As Double, b As Double, rho As Double) As Double ' Based on Drezner-1978
+Public Function CBND3(a As Double, b As Double, rho As Double) As Double ' Based on Drezner-1978
 
     Dim x As Variant, y As Variant
     Dim rho1 As Double, rho2 As Double, delta As Double
@@ -330,10 +328,10 @@ Public Function CBND3(A As Double, b As Double, rho As Double) As Double ' Based
     
     x = Array(0.24840615, 0.39233107, 0.21141819, 0.03324666, 0.00082485334)
     y = Array(0.10024215, 0.48281397, 1.0609498, 1.7797294, 2.6697604)
-    a1 = A / Sqr(2 * (1 - rho ^ 2))
+    a1 = a / Sqr(2 * (1 - rho ^ 2))
     b1 = b / Sqr(2 * (1 - rho ^ 2))
     
-    If A <= 0 And b <= 0 And rho <= 0 Then
+    If a <= 0 And b <= 0 And rho <= 0 Then
         sum = 0
         For i = 0 To 4
             For j = 0 To 4
@@ -342,21 +340,21 @@ Public Function CBND3(A As Double, b As Double, rho As Double) As Double ' Based
             Next
         Next
         CBND3 = Sqr(1 - rho ^ 2) / PI * sum
-    ElseIf A <= 0 And b >= 0 And rho >= 0 Then
-        CBND3 = CND(A) - CBND3(A, -b, -rho)
-    ElseIf A >= 0 And b <= 0 And rho >= 0 Then
-        CBND3 = CND(b) - CBND3(-A, b, -rho)
-    ElseIf A >= 0 And b >= 0 And rho <= 0 Then
-        CBND3 = CND(A) + CND(b) - 1 + CBND3(-A, -b, rho)
-    ElseIf A * b * rho > 0 Then
-        rho1 = (rho * A - b) * Sgn(A) / Sqr(A ^ 2 - 2 * rho * A * b + b ^ 2)
-        rho2 = (rho * b - A) * Sgn(b) / Sqr(A ^ 2 - 2 * rho * A * b + b ^ 2)
-        delta = (1 - Sgn(A) * Sgn(b)) / 4
-        CBND3 = CBND3(A, 0, rho1) + CBND3(b, 0, rho2) - delta
+    ElseIf a <= 0 And b >= 0 And rho >= 0 Then
+        CBND3 = CND(a) - CBND3(a, -b, -rho)
+    ElseIf a >= 0 And b <= 0 And rho >= 0 Then
+        CBND3 = CND(b) - CBND3(-a, b, -rho)
+    ElseIf a >= 0 And b >= 0 And rho <= 0 Then
+        CBND3 = CND(a) + CND(b) - 1 + CBND3(-a, -b, rho)
+    ElseIf a * b * rho > 0 Then
+        rho1 = (rho * a - b) * Sgn(a) / Sqr(a ^ 2 - 2 * rho * a * b + b ^ 2)
+        rho2 = (rho * b - a) * Sgn(b) / Sqr(a ^ 2 - 2 * rho * a * b + b ^ 2)
+        delta = (1 - Sgn(a) * Sgn(b)) / 4
+        CBND3 = CBND3(a, 0, rho1) + CBND3(b, 0, rho2) - delta
     End If
 End Function
 
-Public Function CBND4(A As Double, b As Double, rho As Double) As Double
+Public Function CBND4(a As Double, b As Double, rho As Double) As Double
 'modified/corrected from the second function in Drez & Wes paper pg. 105
 '0/0 case resolved by l'H rule
 
@@ -370,7 +368,7 @@ Public Function CBND4(A As Double, b As Double, rho As Double) As Double
   x = Array(0.04691008, 0.23076534, 0.5, 0.76923466, 0.95308992)
   W = Array(0.018854042, 0.038088059, 0.0452707394, 0.038088059, 0.018854042)
   
-  h1 = A
+  h1 = a
   h2 = b
   h12 = (h1 * h1 + h2 * h2) / 2
   
@@ -417,26 +415,76 @@ Public Function CBND4(A As Double, b As Double, rho As Double) As Double
      
 End Function
 
-Public Function CBNDGeneral(x, y, rho As Double) As Double 'Cumulative Bivariate Normal Distribution
+Public Function CBNDGeneral(TypeFlag As Integer, x As Double, y As Double, rho As Double) As Double
+
+    If TypeFlag = 1 Then 'Drezner-78
+        CBNDGeneral = CBND2(x, y, rho)
+    ElseIf TypeFlag = 2 Then 'Drezner-Weso-90a
+        CBNDGeneral = CBND3(x, y, rho)
+     ElseIf TypeFlag = 3 Then 'Drezner-Weso-90a
+        CBNDGeneral = CBND4(x, y, rho)
+     ElseIf TypeFlag = 4 Then ' Genze
+        CBNDGeneral = CBND(x, y, rho)
+    End If
+    
+End Function
+
+Public Function CNDEV(p As Double)
+
+Dim a As Variant, b As Variant, c As Variant, d As Variant
+Dim LOW As Double, HIGH As Double
+Dim q As Double, r As Double
+
+a = Array(-39.6968302866538, 220.946098424521, -275.928510446969, _
+            138.357751867269, -30.6647980661472, 2.50662827745924)
+b = Array(-54.4760987982241, 161.585836858041, -155.698979859887, _
+            66.8013118877197, -13.2806815528857)
+c = Array(-7.78489400243029E-03, -0.322396458041136, -2.40075827716184, _
+            -2.54973253934373, 4.37466414146497, 2.93816398269878)
+d = Array(7.78469570904146E-03, 0.32246712907004, 2.445134137143, _
+                    3.75440866190742)
+
+LOW = 0.02425
+HIGH = 0.97575
+
+q = 0#
+r = 0#
+
+If (p < 0 Or p > 1) Then
+    CNDEV = 0#
+ElseIf (p = 0) Then CNDEV = -999999.99
+ElseIf (p = 1) Then CNDEV = 999999.99
+ElseIf (p < LOW) Then
+    q = Sqr(-2# * Log(p))
+    CNDEV = (((((c(0) * q + c(1)) * q + c(2)) * q + c(3)) * q + c(4)) * q + c(5)) / _
+        ((((d(0) * q + d(1)) * q + d(2)) * q + d(3)) * q + 1#)
+ElseIf (p > HIGH) Then
+    q = Sqr(-2# * Log(1# - p))
+    CNDEV = -(((((c(0) * q + c(1)) * q + c(2)) * q + c(3)) * q + c(4)) * q + c(5)) / _
+        ((((d(0) * q + d(1)) * q + d(2)) * q + d(3)) * q + 1#)
+Else
+    q = p - 0.5
+    r = q * q
+    CNDEV = (((((a(0) * r + a(1)) * r + a(2)) * r + a(3)) * r + a(4)) * r + a(5)) * q / _
+        (((((b(0) * r + b(1)) * r + b(2)) * r + b(3)) * r + b(4)) * r + 1#)
+End If
 
 End Function
 
-
-
 Sub test()
-Dim x As Double
-Dim y As Double
-Dim rho As Double
+Dim x As Double, y As Double, rho As Double
 
 x = (Log(30 / 35) + (0.05 - 0# + 0.5 * 0.3 * 0.3) * 1) / (0.3 * Sqr(1))
 y = 1
 rho = 0.3
 
-'Debug.Print x
+Debug.Print x
 
 Debug.Print CBND(x, y, rho)
 Debug.Print CBND2(x, y, rho)
 Debug.Print CBND3(x, y, rho)
 Debug.Print CBND4(x, y, rho)
+
+Debug.Print CNDEV(-x)
 
 End Sub
