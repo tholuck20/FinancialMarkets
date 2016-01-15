@@ -1,30 +1,16 @@
 
 // Longstaff-Schwartz (2000) algorithm for valuing American options under Black-Scholes
 
-// Fabrice Douglas Rouah, FRouah.com and Volopta.com
-
-
-
 #include "stdafx.h"
-
 #include <iostream>
-
 #include <iomanip>
-
 #include <vector>
-
 #include <math.h>
 
-
-
 #include "BlackScholes.h"
-
 #include "MatrixOperations.h"
-
 #include "BlackScholesSim.h"
-
 #include "BlackScholesLSM.h"
-
 #include "TrinomialTree.h"
 
 using namespace std;
