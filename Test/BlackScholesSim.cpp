@@ -1,10 +1,6 @@
 
 // Simulation of stock prices under Black Scholes
 
-// by Fabrice Douglas Rouah, FRouah.com and Volopta.com
-
-
-
 #include "StdAfx.h"
 
 #include "BlackScholesSim.h"
