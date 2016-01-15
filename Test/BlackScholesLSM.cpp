@@ -1,12 +1,7 @@
 
 // Black Scholes LSM algorithm of Longstaff and Schwartz
 
-// by Fabrice Douglas Rouah, FRouah.com and Volopta.com
-
-
-
 #include "StdAfx.h"
-
 #include "BlackScholesLSM.h"
 
 
