@@ -16,19 +16,15 @@ Option Explicit
 'Debuggez la macro
 'trier les prix par ordre décroissant
 
-
-
-
-
-
-
 Sub Test46_DesChiffresEtDesLettres()
 
-Dim i As Integer, j As Integer, k As Integer
-Dim CetL As Boolean
+Dim i, j, k As Integer
+Dim CetL As Single
 Dim valeur As String
 Dim donnee As String
-Dim plage As Worksheet
+Dim lRow, lRow2, a As Integer
+
+Dim plage As Range
 
 Set plage = Range("A4:B100")
 plage.Clear
@@ -36,35 +32,36 @@ plage.Clear
 
 Randomize
 
+
 '/////////////////////////////////////             Generation de la chaine de caractères donnee                \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 For i = 1 To 40
-    CetL = Int(Rnd() * 2)
-    
+    CetL = Int(Rnd() * 2) '0 ou 1
+    'Chr use ASCI => Numbers: [48;57] & Letters (maj): [65:91]
     Select Case CetL
-
-        Case Chr(Int(Rnd * 21) + 65)
     
-    Case Else
+        Case 1
+        valeur = Chr(Int(Rnd * 21) + 65)
     
-        valeur = Int(Rnd() * 1000000)
+        Case 0
+        valeur = Int(Rnd() * 100000)
 
     End Select
 
-    donnee = donnee & valeur & "_"
+    donnee = donnee & valeur & "_" '_ de fin
 
 Next i
 
 i = 1
 
-'////////////////////////////////////////            Decoupage de la chaine et rangement dans les colonnes respectives        \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+'//////////////////////////////////////// Decoupage de la chaine et rangement dans les colonnes respectives        \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 While i <= Len(donnee)
 
     If Mid(donnee, i, 1) = "_" Then
     
-        
+        i = i + 1
     
     End If
-    Else
+    
     
         If IsNumeric(Mid(donnee, i, 1)) Then
         
@@ -85,10 +82,31 @@ While i <= Len(donnee)
             i = i + 1
             
         End If
-        
-    End If
 
-Loop
+Wend
+
+'//////////////////////////////////////// Tri des prix par ordre décroissant \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+lRow = Range("A3").End(xlDown).Row
+lRow2 = Range("B3").End(xlDown).Row
+
+a = WorksheetFunction.Max(lRow, lRow2)
+
+    With Sheet1.Sort
+        .SortFields.Clear
+        .SortFields.Add Key:=Range("B4" & ":B" & a), _
+            SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:=xlSortNormal
+        .SetRange Range("A3:B24")
+        .Header = xlYes
+        .Apply
+    End With
+
+End Sub
+
+Sub test()
+
+For i = 1 To 150
+    If Range("A" & i).Value = "_" Then Range("A" & i).Delete
+Next
 
 
 End Sub
