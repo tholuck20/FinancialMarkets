@@ -2,8 +2,8 @@
 // Created by mneri092115 on 10/12/2015.
 //
 
-#ifndef DERIVATIVES_EXOTIC_OPTIONS_H
-#define DERIVATIVES_EXOTIC_OPTIONS_H
+#ifndef EXOTIC_OPTIONS_H
+#define EXOTIC_OPTIONS_H
 #include <vector>
 #include <cmath>
 
@@ -29,4 +29,5 @@ using namespace std;
 // Calculations for lookback options on non-dividend-paying stocks, stock indices,currencies and futures
 
 
-#endif //DERIVATIVES_EXOTIC_OPTIONS_H
+
+#endif //C_EXOTICOPTIONS_HPP
