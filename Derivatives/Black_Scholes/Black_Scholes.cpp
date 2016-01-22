@@ -14,7 +14,7 @@
 using namespace std;
 
 //////////////////////////////////////////////////////// Price ////////////////////////////////////////////////////////
-// Créer plusieurs fonctions prenant en compte q (dividend), b (cost of carry)
+// Cr�er plusieurs fonctions prenant en compte q (dividend), b (cost of carry)
 // Black and Scholes Price + Merton for dividend
 double BSPrice(double S, double K, double T, double r, double v, char optType, double q)
 {
@@ -32,7 +32,7 @@ double BSPrice(double S, double K, double T, double r, double v, char optType, d
 
 // ++ c >= max(S*exp(-q*T)-K*exp(-r*T),0)
 // ++ p >= max(-S*exp(-q*T)+K*exp(-r*T),0)
-// Parité Call/Put c+K*exp(-r*T) = p+S*exp(-q*T)
+// Parit� Call/Put c+K*exp(-r*T) = p+S*exp(-q*T)
 
 // BSPrice for FX Options with Garman-Kohlhagen model
 double BSGKPrice(double S, double K, double T, double rd, double rf, double v, double optType)
@@ -79,14 +79,14 @@ double BSDelta(double S, double K, double T, double r, double v, char optType, d
     if (optType == 'C')
         return exp(-q * T) * NDApprox::CND(d1);
     else
-        return -exp(-q * T) * NDApprox::CND(-d1);
+        return -exp(-q * T) * NDApprox::CND(-d1); // * (NDApprox::CND(d1)-1
 }
 
 // Black and Scholes Gamma
 double BSGamma(double S, double K, double T, double r, double v, double q)
 {
     double d1 = (log(S / K) + (r - q + 0.5* v * v) * T) / (v * sqrt(T));
-    return exp(-q * T) * NDApprox::PDF(d1) / (S * v * sqrt(T));
+    return exp(-q * T) * NDApprox::PDF(d1) / (S * v * sqrt(T)); // N'(d1) = PDF(d1)
 }
 
 // Black and Scholes Vega
