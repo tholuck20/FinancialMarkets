@@ -7,8 +7,7 @@
 #include <cmath>
 
 
-// BinaryOption(S, K, r, q, vol, T, IsCall, IsFut, Divs, IsCash, Result)
-// Calculations for binary options on stocks, stock indices,currencies and futures
+// Price and Greeks for Binary Options
 double BinaryOptions(double S, double K, double T, double r, double v,
                      char optType, bool isCash, bool isFut, double q, int result) // default value for isFut, q, result
 {
