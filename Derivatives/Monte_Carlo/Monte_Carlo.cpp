@@ -2,7 +2,7 @@
 // Created by mneri092115 on 01/02/2016.
 //
 
-#include "MonteCarlo.hpp"
+#include "Monte_Carlo.hpp"
 
 
 /* 1. Tirer au hasard une trajectoire de S dans l'univers risque-neutre
