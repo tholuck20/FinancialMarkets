@@ -5,3 +5,6 @@ In BS model, theoretical value of a vanilla option is a monotonic increasing fun
 
 
 See stochastic volatility models and local volatility models for improvements.
+
+
+Monte Carlo simulation tend to be more effective when 3 or more stochastic variables are used. Because computation time increases linearly in Monte Carlo simulations and increase exponentially for most of other simulation methods. 
