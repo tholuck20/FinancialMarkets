@@ -12,20 +12,24 @@ Monte Carlo simulation tend to be more effective when 3 or more stochastic varia
 
 Dans le cas où l'on simule les réalisations des processus stochastiques suivis par les variables sous-jacentes, il faut simuler un très grand nombre de trajectoires pour estimer f avec une précision raisonnable. Pour conduire à de notables économies de temps de calcul, il est possible d'utiliser des procédés de réduction de la variance.
 
-- Technique de la variable antithétique:
-  Calcul de deux valeurs de l'actif dérivé par simulation.
-  La première valeur, f1, est calculée selon la procédure maintenant usuelle.
-  La deuxième valeur, f2, est déterminée en changeant le signe de tous les tirages aléatoires de la loi normale centrée-réduite.
-  On retient alors la moyenne de f1 et f2 pour calculer la valeur de l'actif dérivé.
-  Dans ce cas quand l'une des valeurs est supérieure à la vraie valeur, l'autre tend à être inférieure et vice versa. 
-- Technique du contrôle de la différence:
-  Applicable quand il existe deux actifs dérivés A et B, semblables, et où une solution analytique permet l'évaluation de B (fB). 
-  Calcul des valeurs pour chaque actif dérivé par simulation (f*A et f*B) (mêmes suites de nombres aléatoires, même périodicité).
-  Ainsi, on obtient une meilleure estimation de la valeur de A :
+- TECHNIQUE DE LA VARIABLE ANTITHÉTIQUE:
+Calcul de deux valeurs de l'actif dérivé par simulation.
+La première valeur, f1, est calculée selon la procédure maintenant usuelle.
+La deuxième valeur, f2, est déterminée en changeant le signe de tous les tirages aléatoires de la loi normale centrée-réduite.
+On retient alors la moyenne de f1 et f2 pour calculer la valeur de l'actif dérivé.
+Dans ce cas quand l'une des valeurs est supérieure à la vraie valeur, l'autre tend à être inférieure et vice versa. 
+- TECHNIQUE DU CONTRÔLE DE LA DIFFÉRENCE:
+Applicable quand il existe deux actifs dérivés A et B, semblables, et où une solution analytique permet l'évaluation de B (fB). 
+Calcul des valeurs pour chaque actif dérivé par simulation (f*A et f*B) (mêmes suites de nombres aléatoires, même périodicité).
+Ainsi, on obtient une meilleure estimation de la valeur de A :
     fA = f*A - f*B + fB
-- L'échantillonnage par importance (importance sampling):
-  Exemple: call européen DOTM, et d'échéance T. Si simulatoin, la plupart des trajectoires vont conduire à un prix à un flux terminal   nul.
-  Choisir que les trajectoires importantes, c'est-à-dire, celles qui conduisent à un prix temrinal du sous-jacent supérieur à K.
-  Notons F la distribution de probabilité non conditionnelle du prix de l'action à la date T et supposons aussi que la probabilité,     notée q, que le prix de l'action soit supérieur à K à l'échéance puisse être déterminée analytiquement. 
-  Dans ce cas
+- L'ÉCHANTILLONNAGE PAR IMPORTANCE (IMPORTANCE SAMPLING):
+Exemple: call européen DOTM, et d'échéance T. Si simulatoin, la plupart des trajectoires vont conduire à un prix à un flux terminal   nul.
+Choisir que les trajectoires importantes, c'est-à-dire, celles qui conduisent à un prix temrinal du sous-jacent supérieur à K.
+Notons F la distribution de probabilité non conditionnelle du prix de l'action à la date T et supposons aussi que la probabilité,     notée q, que le prix de l'action soit supérieur à K à l'échéance puisse être déterminée analytiquement. 
+Dans ce cas, G = F/q est la distribution de probabilité du prix de l'action, conditionnellement à l'évènement S > K. 
+Pour la mise en place d'un échantillonnage par importance, la simulation est effectuée à partir de valeurs tirées de G plutôt que de   F.
+L'estimation de la valeur de l'option est alors la moyenne actualisée du payoff terminal multiplié par q. 
+- L'ÉCHANTILLONNAGE STRATIFIÉ:
+Echantillonnage de valeurs représentatives d'une distribution de probabilité, plutôt que de valeurs aléatoires, permet généralement   d'améliorer la précision de la simulation
   
