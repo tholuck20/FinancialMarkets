@@ -31,5 +31,11 @@ Dans ce cas, G = F/q est la distribution de probabilité du prix de l'action, co
 Pour la mise en place d'un échantillonnage par importance, la simulation est effectuée à partir de valeurs tirées de G plutôt que de   F.
 L'estimation de la valeur de l'option est alors la moyenne actualisée du payoff terminal multiplié par q. 
 - L'ÉCHANTILLONNAGE STRATIFIÉ:
-Echantillonnage de valeurs représentatives d'une distribution de probabilité, plutôt que de valeurs aléatoires, permet généralement   d'améliorer la précision de la simulation
-  
+Echantillonnage de valeurs représentatives d'une distribution de probabilité, plutôt que de valeurs aléatoires, permet généralement   d'améliorer la précision de la simulation.
+Si l'on désire par exemple 1000 tirages d'une distribution de probabilité, il convient de diviser la distribution en, par exemple, 10 intervalles équiprobables et de choisir 100 valeurs dans chacun de ceux-ci. 
+Si la loi est normale centrée-réduite et qu'on considère n intervalles, la valeur représentative du i-ème intervalle est :
+ N^-1((i-0.5)/n)
+où N^-1 est la fonction réciproque de la fonction de répartition de la loi normale (=LOI.NORMALE.STANDARD.INVERSE())
+- MÉTHODE DES MOMENTS
+Ajuster les échantillons tirés de la distributioon normale centrée-réduite de façon à récupérer la valeur exacte du premier, du second moment, et éventuellement des moments d'ordre supérieur. 
+
