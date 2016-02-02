@@ -4,4 +4,4 @@ Standard Black-Scholes option pricing assumes constant volatility and log-normal
 In BS model, theoretical value of a vanilla option is a monotonic increasing function of the volatility of the undelying asset. 
 
 
-See stochastic volatility model for improvements.
+See stochastic volatility models and local volatility models for improvements.
