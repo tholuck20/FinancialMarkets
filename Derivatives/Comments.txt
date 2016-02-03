@@ -10,6 +10,19 @@ See stochastic volatility models and local volatility models for improvements.
 Monte Carlo simulation tend to be more effective when 3 or more stochastic variables are used. Because computation time increases linearly in Monte Carlo simulations and increase exponentially for most of other simulation methods. 
 
 
+
+
+
+Preliminaries from Calculus; Concepts of Probability Theory; Basic Stochastic Processes; Brownian
+Motion Calculus; Stochastic Differential Equations; Diffusion Processes; Martingales; Calculus for
+Semi-martingales; Pure Jump Processes; Change of Probability Measure;
+Applications in Finance: Stock and FX Options; Applications in Finance: Bonds, Rates and Options
+
+
+
+
+
+
 Dans le cas où l'on simule les réalisations des processus stochastiques suivis par les variables sous-jacentes, il faut simuler un très grand nombre de trajectoires pour estimer f avec une précision raisonnable. Pour conduire à de notables économies de temps de calcul, il est possible d'utiliser des procédés de réduction de la variance.
 
 - TECHNIQUE DE LA VARIABLE ANTITHÉTIQUE:
