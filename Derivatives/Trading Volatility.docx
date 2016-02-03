@@ -1,0 +1,7 @@
+
+
+
+DELTA Measures dividend risk and equity risk:
+The delta of the option is the amount of equity market exposure an option has. As a stock price falls by the dividend 
+amount on its ex-date, delta is equal to the exposure to dividends that go ex before expiry. 
+The dividend risk is equal to the negative of the delta. 
