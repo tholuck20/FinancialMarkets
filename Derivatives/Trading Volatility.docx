@@ -1,7 +1,27 @@
 
 
 
-DELTA Measures dividend risk and equity risk:
++DELTA Measures dividend risk and equity risk:
 The delta of the option is the amount of equity market exposure an option has. As a stock price falls by the dividend 
 amount on its ex-date, delta is equal to the exposure to dividends that go ex before expiry. 
 The dividend risk is equal to the negative of the delta. 
+
++DELTA IS NOT THE PROBABILITY OPTION EXPIRES ITM
+It is for digital option (binary option). The probability of such an option expiring ITM is equal to delta, as the payoff 
+only depends on it being ITM or not (the size of the payment does not change with how much ITM spot is). 
+For a vanilla option, there is a difference but this difference is typically small unless the maturity of the option is very long. 
+
+Delta takes into account the mamount an option can be ITM.
+Call can have infinite payoff, put's maximum value is the strike (as spot cannot go below zero). The delta hedge has to take this
+into account so:
+  Call delta      >  Probability call ends up ITM
+  ABS(Put delta)  <  Probability put ends up ITM
+  
++Stock replacing via calls/puts benefits from convexity:
+A call option is convex: delta increases as spot increases and decreases as spot decreases. 
+This means that losses are smaller and returns are bigger. 
+The downside of using calls is that the position will give a wore profile than the original long stock position if the underlying 
+does not move much (because of time value: as cal options will fall each day by the theta if spot remains unchanged). 
+Using calls is best when implied volatility is cheap and the investor expects the stock to move by more than currently implied (logique
+étant donné que la volatilité actuelle est prise en compte dans le prix de l'option, pour gagner il faut que la volatilité "réelle" soit 
+plus importante). 
