@@ -1,1 +1,12 @@
 CFA is academic and scholar oriented (direct concepts learning, at least for level 1), FMI courses are more oriented to practice and practitioner experience sharing.
+
+
+
+
+
+
+
+Preliminaries from Calculus; Concepts of Probability Theory; Basic Stochastic Processes; Brownian
+Motion Calculus; Stochastic Differential Equations; Diffusion Processes; Martingales; Calculus for
+Semi-martingales; Pure Jump Processes; Change of Probability Measure;
+Applications in Finance: Stock and FX Options; Applications in Finance: Bonds, Rates and Options
