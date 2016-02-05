@@ -35,4 +35,13 @@ ls() #Permet de lister toutes les variables créées
 ls(pattern="var") #Liste toutes les variables dont le nom contient "var"
 rm(var1) #Permet de supprimer la variable "var1"
 
+#Pour enregistrer ce qui s\'affiche à l\'écran dans un fichier:
+sink("chemin/nomdufichier.extension") #Début: n\'affiche plus sur l\'écran mais enregistre dans le fichier
+sink() #Fin : n\'enregistre plus dans le fichier mais affiche sur l\'écran
+  #Argument facultatif: append
+    #append=false (valeur par défault): les nouvelles données écrasent les données existantes dans le fichier
+    #append=true : les nouvelles données sont ajoutées aux données existantes dans le fichier
+
+
+
 
