@@ -19,9 +19,9 @@ Anciennes version de R (similaires à la fonction as.numeric()):
   as.single()
   as.real()
   
-floor(2.4) donne 2 #Renvoie à l'entier inférieur
-ceiling(2.4) donne 3 #Renvoie à l'entier supérieur
-round(2.4) donne 2 #Renvoie à l'entier le plus proche
+floor(2.4) donne 2 #Renvoie à l\'entier inférieur
+ceiling(2.4) donne 3 #Renvoie à l\'entier supérieur
+round(2.4) donne 2 #Renvoie à l\'entier le plus proche
 
-scan() #Lis les données entrées par l'utilisateur (pour sortir taper sur Entrée sans mettre de valeur)
+scan() #Lis les données entrées par l\'utilisateur (pour sortir taper sur Entrée sans mettre de valeur)
 paste("abc", scan(nmax=1), "def")
