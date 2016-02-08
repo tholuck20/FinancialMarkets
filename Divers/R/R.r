@@ -18,7 +18,13 @@ Anciennes version de R (similaires à la fonction as.numeric()):
   as.double()
   as.single()
   as.real()
-  
+
+mod(var) #Donne le type de la variable var
+length(var) #Donne le nombre d\'élément la variable var
+
+R sait gérer les valeurs numériques non-finies (exemple: x<-5/0, x retourne INF, exp(-x) retourne 0, x-x retourn NaN)
+NaN = Not a Number (exemple: Inf-Inf)
+
 floor(2.4) donne 2 #Renvoie à l\'entier inférieur
 ceiling(2.4) donne 3 #Renvoie à l\'entier supérieur
 round(2.4) donne 2 #Renvoie à l\'entier le plus proche
