@@ -33,6 +33,7 @@ substr(x, start, strop) #Extraire une sous chaine allant du caractère n° start
 
 ls() #Permet de lister toutes les variables créées
 ls(pattern="var") #Liste toutes les variables dont le nom contient "var"
+ls(pat="var") #Abréviation de la commande ci-dessus
 rm(var1) #Permet de supprimer la variable "var1"
 
 #Pour enregistrer ce qui s\'affiche à l\'écran dans un fichier:
