@@ -29,14 +29,6 @@ floor(2.4) donne 2 #Renvoie à l'entier inférieur
 ceiling(2.4) donne 3 #Renvoie à l'entier supérieur
 round(2.4) donne 2 #Renvoie à l'entier le plus proche
 
-scan() #Lis les données entrées par l'utilisateur (pour sortir taper sur Entrée sans mettre de valeur)
-#Manipuler chaîne de caractères:
-paste("abc", scan(nmax=1), "def") #Concaténation
-nchar() #Compte le nombre de caractère (espace compris)
-toupper() #Converti tout en MAJUSCULE
-tolower() #Converti tout en minuscule
-substr(x, start, strop) #Extraire une sous chaine allant du caractère n° start au caractère n° stop à partir de la chaine x
-
 ls() #Permet de lister toutes les variables créées
 ls(pattern="var") #Liste toutes les variables dont le nom contient "var"
 ls(pat="var") #Abréviation de la commande ci-dessus
@@ -48,6 +40,21 @@ rm(lsit=ls()) #Permet de supprimer toutes les variables
 
 help("bs", try.all.packages = TRUE) #Permet de chercher dans tous les packages
 help("bs", package = "splines") #Demande de chercher spécifiquement dans un package
+
+#For reading and writing files, R uses the working directory.
+getwd() #Find the working directory
+setwd("C:/date") #Change the working directory
+
+scan() #Lis les données entrées par l'utilisateur (pour sortir taper sur Entrée sans mettre de valeur)
+
+#Manipuler chaîne de caractères:
+paste("abc", scan(nmax=1), "def") #Concaténation
+nchar() #Compte le nombre de caractère (espace compris)
+toupper() #Converti tout en MAJUSCULE
+tolower() #Converti tout en minuscule
+substr(x, start, strop) #Extraire une sous chaine allant du caractère n° start au caractère n° stop à partir de la chaine x
+
+
 
 #Pour enregistrer ce qui s\'affiche à l\'écran dans un fichier:
 sink("chemin/nomdufichier.extension") #Début: n\'affiche plus sur l\'écran mais enregistre dans le fichier
