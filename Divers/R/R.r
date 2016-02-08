@@ -34,7 +34,14 @@ substr(x, start, strop) #Extraire une sous chaine allant du caractère n° start
 ls() #Permet de lister toutes les variables créées
 ls(pattern="var") #Liste toutes les variables dont le nom contient "var"
 ls(pat="var") #Abréviation de la commande ci-dessus
+ls(pat="^var") #Le "^" permet de ne choisir que les variables dont le nom COMMENCE par "var"
+ls.str() #Liste les variables avec des infos en plus (ex: le type)
+
 rm(var1) #Permet de supprimer la variable "var1"
+rm(lsit=ls()) #Permet de supprimer toutes les variables
+
+help("bs", try.all.packages = TRUE) #Permet de chercher dans tous les packages
+help("bs", package = "splines") #Demande de chercher spécifiquement dans un package
 
 #Pour enregistrer ce qui s\'affiche à l\'écran dans un fichier:
 sink("chemin/nomdufichier.extension") #Début: n\'affiche plus sur l\'écran mais enregistre dans le fichier
