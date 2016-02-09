@@ -2,8 +2,8 @@
 // Created by mneri092115 on 01/02/2016.
 //
 
-#ifndef C_MONTECARLO_HPP
-#define C_MONTECARLO_HPP
+#ifndef C_MONTECARLO_H
+#define C_MONTECARLO_H
 
 /* 1. Tirer au hasard une trajectoire de S dans l'univers risque-neutre
  * 2. Calculer le flux payé à l'échéance par l'actif dérivé pour cette trajectoire
@@ -15,4 +15,4 @@
       de l'actif dérivé.
 */
 
-#endif //C_MONTECARLO_HPP
+#endif //C_MONTECARLO_H
