@@ -1,3 +1,10 @@
+Bonds
+ - BlackBondOpt
+ - BondPrice
+ - HullWhiteBondOpt
+ - IPortfolio
+ - TreeBondOpt
+
 Calc_Credit:
  - CDO_Calculations
  - CDO_Pmts
@@ -22,11 +29,13 @@ Calc_Eq_Options:
  - bivar
  - BS_compute
  - BuildTree
+ - Check_Input_Div_Data (Function)
  - CEVCompute
  - chilarge
  - chooser_compute
  - Compound_Compute
  - ding
+ - HW_TreeEquityOpt (Function)
  - lookback_compute
  - MertonJumpCompute
  - rubin_A
@@ -74,10 +83,15 @@ Calc_IR_Options
  - HW_Analytic_Cap
  - HW_DiscountBondOption
  - HW_DiscountBondPrice
+ - HW_HullWhiteSwapOption (Function)
+ - HW_TreeBondOption (Function)
+ - HW_TreeCap (Function)
+ - HW_TreeSwapOption (Function)
  - Interp_Value
  - Swap_Price
  - TreeBondOption
  - TreeCap
+ - TreeCapOption (Function)
  - TreeSwapOption
 
 Calc_IR_Tree
@@ -102,6 +116,7 @@ Calc_IR_Tree
  - GetQ
  - MakeHW_Tree
  - NextNode
+ - NodeYCRates (Function)
  - p
  - PD
  - pm
@@ -111,6 +126,8 @@ Calc_IR_Tree
  - rv
  - RValue
  - setQ
+ - StepYCDates (Function)
+ - StepYCNRates (Function)
  - TreeAdjust
  - TreeAdvance
  - xv
@@ -192,12 +209,20 @@ IO_CDO
  - CDO_compute_handler
  - Check_Input_CDO_Data
  - GetCDOData
+ - CDO_Spread (Function) -> See Class in DG 3.00
+ - CDO_UpFront (Function)
+ - CDO_Value (Function)
+ - ImplyCopulaCorrelation (Function)
 
 IO_CDS
  - CDS_Calculation
  - CDS_compute_handler
  - GetCDSData
  - Imply_HazRate
+ - CDS_Spread (Function) -> See Class in DG 3.00
+ - CDS_Value (Function)
+ - DefaultProbability (Function)
+ - ImplyHazardRates (Function)
 
 IO_Eq_Graph
  - Eq_Gr_Copy_Data
@@ -284,11 +309,10 @@ Util_NormDist
 Utilities
  - Qsort
  - SWAP
- - 
- - 
- - 
- - 
- - 
+
+
+
+
  - 
  - 
  - 
