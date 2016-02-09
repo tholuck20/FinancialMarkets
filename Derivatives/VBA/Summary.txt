@@ -1,3 +1,4 @@
+MODULES:
 Bonds
  - BlackBondOpt
  - BondPrice
@@ -309,3 +310,89 @@ Util_NormDist
 Utilities
  - Qsort
  - SWAP
+
+CLASS MODULES:
+clsBond
+ - Clean_Price [PropertyGet]
+ - CleanYieldPrice [PropertyGet]
+ - count [PropertyGet]
+ - Dirty_Price [PropertyGet]
+ - DirtyYieldPrice [PropertyGet]
+ - HW_Price
+ - MakeBond
+ - PaymentDates
+ - Price_Yield [PropertyGet]
+ - theAccrual [PropertyGet]
+ - Yvol_to_Pvol
+
+clsBondLeg
+
+clsCap
+ - EvaluateLegFwd
+ - GetCapDates
+ - GetCapExDates
+ - GetCaplet [PropertyGet]
+ - MakeCap
+
+clsCapLeg
+
+clsCDO
+ - CDO_Pmts
+ - CDO_Prin
+ - CDO_Spread_Calc
+ - Exp_CDO_Prin
+ - gauher
+ - H_Zeroes
+ - IntegrateHazard
+ - MakeCDO
+ - makeProbs
+ - pDead
+ - TrancheSpread [PropertyGet]
+ - TrancheUpfront [PropertyGet]
+ - TrancheValue [PropertyGet]
+
+clsCDS
+ - accrual [PropertyGet]
+ - Annuity [PropertyGet]
+ - BE_Spread [PropertyGet]
+ - IntegrateHazard
+ - MakeCDS
+ - pDead
+ - PV_Payoff [PropertyGet]
+ - value [PropertyGet]
+
+clsCDSLeg
+
+clsList
+ - Add
+ - Add_neg
+ - AddArray
+ - change_t
+ - count [PropertyGet]
+ - DF [PropertyGet]
+ - GetArray
+ - Indx
+ - Remove
+ - shift [PropertyLet]
+ - truncate [PropertyLet]
+ - tt [PropertyGet]
+ - v [PropertyGet]
+ - vv [PropertyGet]
+
+clsListItem
+
+clsSwap_OIS
+ - Clear
+ - ForwardSwapRate [PropertyGet]
+ - GetSwapDates
+ - MakeSwap
+ - MakeSwap_fl
+ - MakeSwap_x
+ - SwapAnnuity [PropertyGet]
+ - SwapPrice [PropertyGet]
+ - SwapPrice_fl [PropertyGet]
+ - SwapPrice_x [PropertyGet]
+ 
+clsSwapFixedLeg
+
+clsSwapFloatLeg
