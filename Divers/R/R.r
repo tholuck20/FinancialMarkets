@@ -81,9 +81,16 @@ names(var) #Permet de donner des noms aux éléments du vecteur
 vec2 = vec[vec>x] #Permet de créer un vec2 à partir des valeurs de vec supérieures à x uniquement
 #On peut aussi sélectionner les valeurs d'un vecteur à partir du nom de ses éléments
 
-head(vec, n) #Permet de sélectionner les n premières valeures du vecteur (par défaut n=6)
-tail(vec, n) #Permet de sélectionner les n dernières valeures du vecteur (par défaut n=6)
+head(vec, n) #Permet de sélectionner les n premières valeurs du vecteur (par défaut n=6)
+tail(vec, n) #Permet de sélectionner les n dernières valeurs du vecteur (par défaut n=6)
 sort(vec, decreasing=T) #Permet de trier un vecteur (par défaut dans l'ordre croissant)
+order(vec) #Fonctionne de la même manière que sort mais renvoie les indexes plutôt que les valeurs
+
+mean(vec) #Moyenne de la distribution 
+mean(vec, na.rm=T) #'na.rm=T' permet d'enlever les valeur NA
+median(vec) #Médiane de la distribution
+
+quantile(vec2, probs=seq(0,1,0.1)) #10-quantiles (déciles)
 
 
 #Pour générer des nombres aléatoires:
