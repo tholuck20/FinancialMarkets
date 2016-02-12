@@ -36,7 +36,7 @@ ls(pat="^var") #Le "^" permet de ne choisir que les variables dont le nom COMMEN
 ls.str() #Liste les variables avec des infos en plus (ex: le type)
 
 rm(var1) #Permet de supprimer la variable "var1"
-rm(lsit=ls()) #Permet de supprimer toutes les variables
+rm(list=ls()) #Permet de supprimer toutes les variables
 
 help("bs", try.all.packages = TRUE) #Permet de chercher dans tous les packages
 help("bs", package = "splines") #Demande de chercher spécifiquement dans un package
