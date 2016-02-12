@@ -68,3 +68,16 @@ numeric(x) ou scan(nmax=x) #Permet de créer un vecteur de x éléments numeric
 logical(10)
 character(10)
 
+1:10 #Permet de générer une série de nombre (ici de 1 à 10)
+20:10 #Possible dans l'ordre décroissant aussi
+
+rep(1,10) #Permet de répéter 10 fois le nombre 1, utilisable avec d'autres types d'éléments
+seq(1,10) #<=>1:10 #Permet de générer une séquence, utilisable avec d'autres types d'éléments
+seq(1,10,2) #Il est possible d'indiquer le pas (ici: 2)
+
+c() #Permet de concaténer pour former un vecteur
+names(var) #Permet de donner des noms aux éléments du vecteur
+
+vec2 = vec[vec>x] #Permet de créer un vec2 à partir des valeurs de vec supérieures à x uniquement
+
+
