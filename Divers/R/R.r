@@ -45,19 +45,17 @@ help("bs", package = "splines") #Demande de chercher spécifiquement dans un pac
 getwd() #Find the working directory
 setwd("C:/date") #Change the working directory
 
-scan() #Lis les données entrées par l'utilisateur (pour sortir taper sur Entrée sans mettre de valeur)
+scan(nmax=1) #Lis les données entrées par l'utilisateur (pour sortir taper sur Entrée sans mettre de valeur)
+      #"nmax=1" permet de spécifier le nombre de ligne/variable que R doit lire
 
 #Manipuler chaîne de caractères:
-paste("abc", scan(nmax=1), "def") #Concaténation
+paste("abc", scan(nmax=1), "def", sep="") #Concaténation, "sep=" permet de définir par quel caractère les données sont séparées (" ", "", "-",...)
 nchar() #Compte le nombre de caractère (espace compris)
 toupper() #Converti tout en MAJUSCULE
 tolower() #Converti tout en minuscule
 substr(x, start, strop) #Extraire une sous chaine allant du caractère n° start au caractère n° stop à partir de la chaine x
 
-
-
-
-#Pour enregistrer ce qui s\'affiche à l\'écran dans un fichier:
+#Pour enregistrer ce qui s'affiche à l'écran dans un fichier:
 sink("chemin/nomdufichier.extension") #Début: n\'affiche plus sur l\'écran mais enregistre dans le fichier
 sink() #Fin : n\'enregistre plus dans le fichier mais affiche sur l\'écran
   #Argument facultatif: append
