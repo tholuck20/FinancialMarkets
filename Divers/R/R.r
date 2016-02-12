@@ -62,6 +62,9 @@ sink() #Fin : n\'enregistre plus dans le fichier mais affiche sur l\'écran
     #append=false (valeur par défault): les nouvelles données écrasent les données existantes dans le fichier
     #append=true : les nouvelles données sont ajoutées aux données existantes dans le fichier
 
-
-
+#Pour déclarer un vector:
+vector("numeric", length=30) #"numeric" or "character" or "logical" (default value)
+numeric(x) ou scan(nmax=x) #Permet de créer un vecteur de x éléments numeric
+logical(10)
+character(10)
 
