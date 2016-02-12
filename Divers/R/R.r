@@ -56,7 +56,7 @@ tolower() #Converti tout en minuscule
 substr(x, start, strop) #Extraire une sous chaine allant du caractère n° start au caractère n° stop à partir de la chaine x
 
 #Pour enregistrer ce qui s'affiche à l'écran dans un fichier:
-sink("chemin/nomdufichier.extension") #Début: n\'affiche plus sur l\'écran mais enregistre dans le fichier
+sink(file="chemin/nomdufichier.extension", append=true) #Début: n\'affiche plus sur l\'écran mais enregistre dans le fichier
 sink() #Fin : n\'enregistre plus dans le fichier mais affiche sur l\'écran
   #Argument facultatif: append
     #append=false (valeur par défault): les nouvelles données écrasent les données existantes dans le fichier
