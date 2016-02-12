@@ -79,5 +79,5 @@ c() #Permet de concaténer pour former un vecteur
 names(var) #Permet de donner des noms aux éléments du vecteur
 
 vec2 = vec[vec>x] #Permet de créer un vec2 à partir des valeurs de vec supérieures à x uniquement
-
+#On peut aussi sélectionner les valeurs d'un vecteur à partir du nom de ses éléments
 
