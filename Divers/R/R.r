@@ -68,13 +68,6 @@ numeric(x) ou scan(nmax=x) #Permet de créer un vecteur de x éléments numeric
 logical(10)
 character(10)
 
-1:10 #Permet de générer une série de nombre (ici de 1 à 10)
-20:10 #Possible dans l'ordre décroissant aussi
-
-rep(1,10) #Permet de répéter 10 fois le nombre 1, utilisable avec d'autres types d'éléments
-seq(1,10) #<=>1:10 #Permet de générer une séquence, utilisable avec d'autres types d'éléments
-seq(1,10,2) #Il est possible d'indiquer le pas (ici: 2)
-
 c() #Permet de concaténer pour former un vecteur
 names(var) #Permet de donner des noms aux éléments du vecteur
 
@@ -90,8 +83,21 @@ mean(vec) #Moyenne de la distribution
 mean(vec, na.rm=T) #'na.rm=T' permet d'enlever les valeur NA
 median(vec) #Médiane de la distribution
 
-quantile(vec2, probs=seq(0,1,0.1)) #10-quantiles (déciles)
+quantile(vec, probs=seq(0,1,0.1)) #10-quantiles (déciles)
+summary(vec) #Affiche: Min, 1st Quantile, Median, Mean, 3rd Quantile, Max
 
+#Pour générer des séquences régulières
+1:10 #Permet de générer une série de nombre (ici de 1 à 10)
+20:10 #Possible dans l'ordre décroissant aussi
+
+rep(1,10) #Permet de répéter 10 fois le nombre 1, utilisable avec d'autres types d'éléments
+seq(1,10) #<=>1:10 #Permet de générer une séquence, utilisable avec d'autres types d'éléments
+seq(1,10,2) #Il est possible d'indiquer le pas (ici: 2)
+gl(3, 5) #Retourne: 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3
+expand.grid(Crit1=c(1,2), Crit2=c("A","B") #Permet de générer un tableau de la forme: 
+  # Crit1 Crit2
+  #     1     A
+  #     2     B
 
 #Pour générer des nombres aléatoires:
 sample(1:10,3) #Permet de générer 3 entiers parmi (1:10)
@@ -99,4 +105,70 @@ sample(1:10,3, replace=T) #Permet comme ci-dessus avec remise
 runif(3, 1.0, 10.5) #Permet de générer 3 nombres à partir d'une distribution uniforme
 round(runif(50, min=40, max=60), digits=2) #Génère nombres à 2 décimales
 
+###### fonction - loi ######
+rnorm(n, mean=0, sd=1) #Gauss (normale) 
+rexp(n, rate=1) #exponentielle
+rgamma(n, shape, scale=1) #gamma
+rpois(n, lambda) #Poisson
+rweibull(n, shape, scale=1) #Weibull
+rcauchy(n, location=0, scale=1) #Cauchy
+rbeta(n, shape1, shape2) #beta
+rt(n, df) #‘Student’ (t)
+rf(n, df1, df2) #Fisher–Snedecor (F)
+rchisq(n, df) #Pearson (χ2) 
+rbinom(n, size, prob) #binomiale
+rmultinom(n, size, prob) #multinomiale
+rgeom(n, prob) #géométrique
+rhyper(nn, m, n, k) #hypergéométrique
+rlogis(n, location=0, scale=1) #logistique
+rlnorm(n, meanlog=0, sdlog=1) #lognormale
+rnbinom(n, size, prob) #binomiale négative
+runif(n, min=0, max=1) #uniforme
+rwilcox(nn, m, n), rsignrank(nn, n) #statistiques de Wilcoxon
 
+#Il est possible de calculer la densité de prob, la densité de prob cumulée, et la valeur quantile pour la plupart de ces fonctions
+#Par exemple pour distribution normale:
+dnorm(x, mean = 0, sd = 1, log = FALSE)
+pnorm(q, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE) #Pour Black&Scholes par exemple
+qnorm(p, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)
+rnorm(n, mean = 0, sd = 1)
+
+#Création d'object
+#Vecteur: voir plus haut
+#Facteur:
+factor(x, levels = sort(unique(x), na.last = TRUE), labels = levels, exclude = NA, ordered = is.ordered(x))
+  #Exemple:
+  factor(1:3) #return: 1 2 3    Levels: 1 2 3
+  factor(1:3, levels=1:5) #return: 1 2 3    Levels: 1 2 3 4 5
+  factor(1:5, exclude=4) #return: 1 2 3 NA 5    Levels: 1 2 3 5
+#Matrice:
+matrix(data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL)
+#Tableau de données:
+data.frame(..., row.names = NULL, check.rows = FALSE, check.names = TRUE, stringsAsFactors = default.stringsAsFactors())
+  #Exemple
+  > x <- 1:4; n <- 10;
+  > data.frame(x, n)
+    #return:  x n
+    #       1 1 10
+    #       2 2 10
+    #       3 3 10
+    #       4 4 10
+
+#Permet d'ouvrir un fichier type tableau
+read.table(file, header = FALSE, sep = "", quote = "\"’", dec = ".",
+row.names, col.names, as.is = FALSE, na.strings = "NA",
+colClasses = NA, nrows = -1,
+skip = 0, check.names = TRUE, fill = !blank.lines.skip,
+strip.white = FALSE, blank.lines.skip = TRUE,
+comment.char = "#")
+
+read.csv(file, header = TRUE, sep = ",", quote="\"", dec=".",
+fill = TRUE, ...)
+read.csv2(file, header = TRUE, sep = ";", quote="\"", dec=",",
+fill = TRUE, ...)
+read.delim(file, header = TRUE, sep = "\t", quote="\"", dec=".",
+fill = TRUE, ...)
+read.delim2(file, header = TRUE, sep = "\t", quote="\"", dec=",",
+fill = TRUE, ...)
+
+https://cran.r-project.org/doc/contrib/Paradis-rdebuts_fr.pdf
