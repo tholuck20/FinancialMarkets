@@ -81,3 +81,15 @@ names(var) #Permet de donner des noms aux éléments du vecteur
 vec2 = vec[vec>x] #Permet de créer un vec2 à partir des valeurs de vec supérieures à x uniquement
 #On peut aussi sélectionner les valeurs d'un vecteur à partir du nom de ses éléments
 
+head(vec, n) #Permet de sélectionner les n premières valeures du vecteur (par défaut n=6)
+tail(vec, n) #Permet de sélectionner les n dernières valeures du vecteur (par défaut n=6)
+sort(vec, decreasing=T) #Permet de trier un vecteur (par défaut dans l'ordre croissant)
+
+
+#Pour générer des nombres aléatoires:
+sample(1:10,3) #Permet de générer 3 entiers parmi (1:10)
+sample(1:10,3, replace=T) #Permet comme ci-dessus avec remise
+runif(3, 1.0, 10.5) #Permet de générer 3 nombres à partir d'une distribution uniforme
+round(runif(50, min=40, max=60), digits=2) #Génère nombres à 2 décimales
+
+
