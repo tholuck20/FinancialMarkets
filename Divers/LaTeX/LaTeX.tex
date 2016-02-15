@@ -16,8 +16,21 @@
 
 \end{document}
 
+% Les Options applicables à la commande \documentclass{} :
++ Format du papier : a4paper, a5paper, letterpaper, b5paper…
+  Default: letterpaper
++ Taille de la police principale : 10pt, 11pt, 12pt
+  Default: 10pt
++ Alignement des équations : fleqn (à gauche, centrées par défaut)
++ Colonnes : onecolumn, twocolumn
+  Default: onecolumn
++ Première page des chapitres : openany, openright
+  Default: openright
++ Recto verso : oneside, twoside
+  Default: article et report : oneside
+           book : twoside
 
-%Les accents accessibles sous LaTeX sont les suivants :
+% Les accents accessibles sous LaTeX sont les suivants :
 + \`{a} ou \`a accent grave
 + \'{e} ou \'e accent aigu
 + \^{i} ou \^i accent circonflexe
@@ -35,3 +48,10 @@
 
 % Divers/Astuces
 + Pas de \chapter{} avec les \documentclass{article} % Pas de chapitre avec les document de type "article"
++ Aller à la ligne sans créer de nouveau paragraphe : \\ ou \newline
++ Aller à la ligne et créer un nouveau paragraphe : 2 sauts de lignes
++ Saut de page : \newpage
++ Pour modifier les marges : \usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+
+
+
