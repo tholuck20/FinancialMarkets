@@ -1,4 +1,23 @@
-Les accents accessibles sous LaTeX sont les suivants :
+%Bien démarrer un document:
+\documentclass[ (options) ]{ (classe) }
+\usepackage[utf8]{inputenc}
+\useackage[T1]{fontenc}
+% Autres packages nécessaires.
+\usepackage[french]{babel}
+
+% Commandes personnalisées.
+
+\title{ (titre) }
+\author{ (auteur) }
+\date{ (date) }
+
+\begin{document}
+\maketitle
+
+\end{document}
+
+
+%Les accents accessibles sous LaTeX sont les suivants :
 + \`{a} ou \`a accent grave
 + \'{e} ou \'e accent aigu
 + \^{i} ou \^i accent circonflexe
@@ -13,3 +32,6 @@ Les accents accessibles sous LaTeX sont les suivants :
 + \c{c} cédille
 + \d{o} point en dessous
 + \b{o} sousligné
+
+% Divers/Astuces
++ Pas de \chapter{} avec les \documentclass{article} % Pas de chapitre avec les document de type "article"
