@@ -53,5 +53,35 @@
 + Saut de page : \newpage
 + Pour modifier les marges : \usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
 
+% Listes à puces:
+\begin{itemize}
+\item Un canard.
+\item Un mammouth.
+\item[@] Une pintade. % En plaçant un @ entre crochets après \item, transforme la puce en @
+\item[0] Un lapin.
+\end{itemize}
+
+% Listes numérotées:
+\begin{enumerate}
+\item un canard
+\item un mammouth
+\item[@] une pintade % En plaçant un @ entre crochets après \item, transforme la puce en @
+\item[0] un lapin
+\end{enumerate}
+
+% Listes de description:
+\begin{description}
+
+\item[Un canard :] bestiole qui fait coin.
+\item[Un poulpe :] bestiole qui fait bloub.
+\item[Un ornithorynque :] bestiole qui fait rire.
+\item[Un ours :] bestiole qui fait mal.
+
+\end{description}
+
+% Les styles:
+\pagestyle{plain} % classique: numéro de page en pied de page, centré
+\pagestyle{headings} % type book: chapitre et numéro de page en tête de page 
+\pagestyle{empty} % rien
 
 
