@@ -84,4 +84,26 @@
 \pagestyle{headings} % type book: chapitre et numéro de page en tête de page 
 \pagestyle{empty} % rien
 
+% Les tailles de texte:
+\tiny Minuscule
+\scriptsize Très très petite
+\footnotesize Très petite
+\small Petite
+\normalsize Normale (définie dans \documentclass)
+\large Légèrement plus grande que la normale
+\Large Grande
+\LARGE Très grande
+\huge Très très grande
+\Huge Énorme !
+
+% Notes de bas de page
+- text \footnote{Texte de la note.} text % Numérotation automatique
+- text /footnotemark[x] % Numérotation manuelle
+  \footnotetext[x]{Texte de la note.}
+
+% LaTeX permet d'écrire des références internes de façon simple. 
+Pour ce faire, trois commandes sont à connaître. 
+La commande \label{nom_choisi} sert à marquer un endroit, et les commandes \ref{nom_choisi} 
+et {\pageref{nom_choisi}} vous permettent d'appeler le numéro de page 
+ou la référence de l'élément marqué dans une autre zone de votre document
 
