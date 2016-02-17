@@ -1,3 +1,5 @@
+Places de cotations: ICE, CME, CBOE
+
 Section 1: Les instruments dérivés de change négociés sur le marché interbancaire
 
 1.1 Le contrat à terme: forward
@@ -12,6 +14,7 @@ Déport (discount): si forward < spot
 Parité: si forward = spot
 
 Taux de swap = taux forward - taux spot
+Taux de report = 360/delta_t * |F-S|/S
 
 1.2 Les Swaps de devises
 
@@ -39,6 +42,14 @@ Avantages: frais de transaction, compensation, anonymat, flexibilité, accessibi
 Options sur contrats à terme
 Options sur devises au comptant
 
+
+Risque de change:
+1) Couverture au comptant
+2) Couverture à terme
+Forward / futures
+3) Assurance contre risque de change
+
+Risk Reversal
 
 
 * Pip (price interest point): plus petite unité lors de la variation du cours de change (équivalent du TIC pour les actions)
