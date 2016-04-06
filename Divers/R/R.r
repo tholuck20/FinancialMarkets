@@ -171,5 +171,9 @@ fill = TRUE, ...)
 read.delim2(file, header = TRUE, sep = "\t", quote="\"", dec=",",
 fill = TRUE, ...)
 
+
+MeanVol = apply(HIndex, 2, mean, na.rm=TRUE) #"apply" mean function to HIndex's columns ('2' for columns, '1' for rows)
+
+
 https://cran.r-project.org/doc/contrib/Paradis-rdebuts_fr.pdf
 
