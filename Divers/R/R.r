@@ -37,6 +37,7 @@ ls.str() #Liste les variables avec des infos en plus (ex: le type)
 
 rm(var1) #Permet de supprimer la variable "var1"
 rm(list=ls()) #Permet de supprimer toutes les variables
+rm(list=setdiff(ls(), "X")) #Permet de supprimer toutes les variables sauf 'X'
 
 help("bs", try.all.packages = TRUE) #Permet de chercher dans tous les packages
 help("bs", package = "splines") #Demande de chercher spécifiquement dans un package
