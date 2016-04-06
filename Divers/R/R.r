@@ -175,6 +175,10 @@ fill = TRUE, ...)
 
 MeanVol = apply(HIndex, 2, mean, na.rm=TRUE) #"apply" mean function to HIndex's columns ('2' for columns, '1' for rows)
 
+X=X[which(!is.na(X))] #Ne garder dans X que les valeurs différentes de NA
+
+
+
 
 https://cran.r-project.org/doc/contrib/Paradis-rdebuts_fr.pdf
 
