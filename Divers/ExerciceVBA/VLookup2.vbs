@@ -11,9 +11,9 @@ Public Function VLOOKUPDATE(Lookup_value, Table_array As Range, Col_index_num As
 
 'Supprimer les dates < TODAY
 
-'Ne garder que la date la plus proche? éloignée?
+'Ne garder que la date la plus proche? éloignée? (en fonction de la condition)
 
-
+'Retourner le résultat (ou une erreur si erreur)
 
 
 End Function
