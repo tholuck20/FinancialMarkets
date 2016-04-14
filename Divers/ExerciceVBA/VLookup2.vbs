@@ -6,6 +6,9 @@ Public Function VLOOKUPDATE(Lookup_value As String, Table_array As Range, Col_in
 Dim valTabl() As Variant
 Dim valKeep() As Variant
 Dim minDate(1, 2) As Variant
+Dim WS As Worksheet
+    
+    Set WS = Table_array.Worksheet
     
     cpt = Application.WorksheetFunction.CountIf(Table_array, Lookup_value)
     
@@ -18,12 +21,12 @@ Dim minDate(1, 2) As Variant
         
         Set c = .Find(Lookup_value)
         valTabl(1, 1) = c.Row
-        valTabl(1, 2) = Cells(c.Row, Col_date_num + decalCol)
+        valTabl(1, 2) = WS.Cells(c.Row, Col_date_num + decalCol)
         
         For i = 2 To cpt
             Set c = .Find(Lookup_value, after:=c)
             valTabl(i, 1) = c.Row
-            valTabl(i, 2) = Cells(c.Row, Col_date_num + decalCol)
+            valTabl(i, 2) = WS.Cells(c.Row, Col_date_num + decalCol)
             
         Next i
         
