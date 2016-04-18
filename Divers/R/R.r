@@ -179,6 +179,31 @@ X=X[which(!is.na(X))] #Ne garder dans X que les valeurs différentes de NA
 
 rle(x) #Renvoie une liste de 2 vecteurs : le premier compte le nombre de récurrence de chaque valeur, le 2ème donne les valeurs
 
+expand.grid(1:2, c('a','b'))
+  #  Var1 Var2
+  #1    1    a
+  #2    2    a
+  #3    1    b
+  #4    2    b
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 https://cran.r-project.org/doc/contrib/Paradis-rdebuts_fr.pdf
 
