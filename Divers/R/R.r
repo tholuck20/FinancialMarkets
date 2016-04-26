@@ -49,6 +49,8 @@ setwd("C:/date") #Change the working directory
 scan(nmax=1) #Lis les données entrées par l'utilisateur (pour sortir taper sur Entrée sans mettre de valeur)
       #"nmax=1" permet de spécifier le nombre de ligne/variable que R doit lire
 
+cat("Text to show ... \n") #Outputs the objects, concatenating the representations. cat performs much less conversion than print.
+
 #Manipuler chaîne de caractères:
 paste("abc", scan(nmax=1), "def", sep="") #Concaténation, "sep=" permet de définir par quel caractère les données sont séparées (" ", "", "-",...)
 nchar() #Compte le nombre de caractère (espace compris)
