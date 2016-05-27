@@ -1,59 +1,5 @@
 
 ######################################### IR #########################################
-nb_numeric_data = function(histo_data){ # TOOLS
-
-	n=length(histo_data)
-	index = 0;
-	for(i in 1:n)
-	{
-		if( !is.na(histo_data[i]) ){
-			index = index +1
-		}
-	}
-	return(index)
-}
-CleanConstData = function(histo_data,seuil_cleaning_data){ # TOOLS
-
-	data_sub = histo_data
-	
-	for(i in 1:length(histo_data[1,])) # On traite colonne par colonne (9 = dates + 8 tenors)
-	{									
-		n = length(data_sub[,i]) # Longueur de la colonne i
-		test_egalite = (data_sub[-n,i] == data_sub[-1,i]) # On compare tout l'historique -dernière date avec tout l'historique décalé d'une date (ie. comparaison de tous les row_i et row_i-1)
-		test_egalite[is.na(test_egalite)] = F
-		
-		compteur = 0
-		ligne = 1
-		
-		while (ligne < n ) # On commence à la ligne 1 et on fini à la dernière ligne -1
-		{
-			if(test_egalite[ligne] == TRUE)
-			{
-				compteur = compteur + 1 # On compte le nombre de fois où les valeurs du tableau sont constantes
-			}
-			else # Dés qu'on repasse sur une valeur non constante, on test:
-			{
-				if(compteur < seuil_cleaning_data) # Soit le nombre de données constantes est inférieur au seuil...
-				{
-					compteur = 0 # ... et on réinitialise,
-				}
-				else # Soit on effectue:
-				{
-					ind_deb = ligne - compteur +1
-					ind_fin = ligne
-					data_sub[c(ind_deb:ind_fin),i] = NA # On définit les valeurs commme NA si le seuil est dépassé
-					
-					compteur = 0
-				}
-			}
-			ligne = ligne +1
-		}
-	}
-	
-	return(data_sub)
-}
-
-
 quantiles_moyennes_diffusion_exp_vasicek = function(a,b,sigma,N){
 	liste_pas_temps = c(1,3,5,10,30)
 	moy = rep(0,5)
@@ -86,14 +32,14 @@ quantiles_moyennes_diffusion_exp_vasicek = function(a,b,sigma,N){
 	res$q99 = q99
 	return(res)
 }
-QuantMoy_Theo = function(CI,a_infla,b_infla,sigma_infla,N=1e5){
+QuantMoy_Theo = function(CI,a_infla,b_infla,sigma_infla,N=1e5){ #
 	for(i in 1:CI$nbInfla) #1:4
 	{
 		ind_deb = 5 * (i-1) + 1
 		a = a_infla[ind_deb]
 		b = b_infla[ind_deb]
 		sigma = sigma_infla[ind_deb]
-		res = quantiles_moyennes_diffusion_exp_vasicek(a,b,sigma,N)
+		res = quantiles_moyennes_diffusion_exp_vasicek(a,b,sigma,N) #
 		
 		if(i==1)
 		{
@@ -114,35 +60,87 @@ QuantMoy_Theo = function(CI,a_infla,b_infla,sigma_infla,N=1e5){
 
 
 
-
-
+######################################### DIV ########################################
+TruncateHistoDatas = function(dates,Histo,Begin,End,Spot=NULL){
+	dates = as.Date(dates)
+	idx_dates = which(dates>=as.Date(Begin) & dates <=as.Date(End))
+	dates = dates[idx_dates]
+	Histo = Histo[idx_dates,]
+	if(!is.null(Spot)){
+		Spot = Spot[idx_dates,]
+		return(list(dates=dates,Histo=Histo,Spot=Spot))
+	}else{
+		return(list(dates=dates,Histo=Histo))
+	}
+}
+Days = function(Begin,End){
+	dates = seq(from=Begin,to=End,by=1)
+	dates = sort(dates,decreasing = FALSE)
+	n = length(dates)
+	return(list(dates=dates,n=n))
+}	
+NetWorkingDays = function(dates,h,Calendar){ #
+	dates_new = dates[isBusinessDay(Calendar,dates)] #
+	idx_dates = match(dates_new,dates)
+	h = h[idx_dates,]
+	return(list(dates=dates_new,h=h))
+}
 
 
 
 
 
 ####################################### Global #######################################
+dirCreate = function(CI,path_dir){
+	dir.create(CI$path_dir,showWarnings=FALSE,recursive=FALSE)
+	
+	dir.create(CI$ResPath,showWarnings=FALSE,recursive=FALSE)
+	dir.create(CI$RefResPath,showWarnings=FALSE,recursive=FALSE)
+	dir.create(CI$ProjResPath,showWarnings=FALSE,recursive=FALSE)
+	
+	dir.create(paste(CI$path_dir,"ASE",sep=""),showWarnings=FALSE,recursive=FALSE)
+	dir.create(paste(CI$path_dir,"TESTS IN SAMPLE",sep=""),showWarnings=FALSE,recursive=FALSE)
+	dir.create(paste(CI$path_dir,"TESTS OUT OF SAMPLE",sep=""),showWarnings=FALSE,recursive=FALSE)
+}
 ComputeReturns = function(dates,Histo,nbFacteurs){
 
-	dates = as.Date(as.character(dates))
-	nb_dates = length(dates)
-	log_Histo = cbind(as.data.frame(dates),log(Histo))
-	d_log_Histo = cbind(as.data.frame(dates[-nb_dates]),sapply(log_Histo[,2:(nbFacteurs+1)],diff))
-	colnames(d_log_Histo) = c("dates",colnames(d_log_Histo)[2:ncol(d_log_Histo)])
+	#dates = as.Date(as.character(dates))
+	#nb_dates = length(dates)
+	log_Histo = log(Histo) #cbind(as.data.frame(dates),log(Histo))
+	d_log_Histo = matrix(NA,nrow(log_Histo),ncol(log_Histo))
+	d_log_Histo = apply(log_Histo,2,diff)
+	#colnames(d_log_Histo) = c("dates",colnames(d_log_Histo)[2:ncol(d_log_Histo)])
 	
 	return(list(log_datas=log_Histo,d_log_datas=d_log_Histo))
 }
+ComputeYieldReturns = function(dates,Histo){ #???? appliquer à tous les risk factors?
+	dates = as.Date(as.character(dates))
+	log_Histo = log(Histo)
+	years = unique(format(dates,"%Y"))
+	d_log_Histo = matrix(NA,nrow(log_Histo),ncol(log_Histo))
+	# CALCUL DES LOG RENDEMENTS EXCEPTE DU PREMIER JOUR DE CHAQUE ANNEE
+	for(year in years){
+		idx = which(format(dates,"%Y") == year)
+		d_log_Histo[idx[-1],] = apply(log_Histo[idx,],2,diff)
+	}
+	return(d_log_Histo)
+}
 
-vol_fractile = function(x,type=1){
+vol_fractile = function(x,minus_moy=FALSE,type=1){
 
-	x = x[!is.na(x)]
-	n = length(x)
-	m = mean(x,na.rm=TRUE)
-	
-	vol_sd = sd(x) * sqrt(1 - 1/n)
-	
-	q1 = quantile(x,0.01,type=type,na.rm=TRUE)
-	q99 = quantile(x,0.99,type=type,na.rm=TRUE)
+	if(!is.null(ncol(x))){
+		vol_sd = as.double(apply(x,2,sd,na.rm=TRUE))
+		m = as.double(apply(x,2,mean,na.rm=TRUE))
+		if(minus_moy){x = t( t(x) - m )}
+		q1 = as.double(apply(x,2,quantile,probs=0.01,type=type,na.rm=TRUE))
+		q99 = as.double(apply(x,2,quantile,probs=0.99,type=type,na.rm=TRUE))
+	}else{
+		vol_sd = as.double(sd(x,na.rm=TRUE))
+		m = as.double(mean(x,na.rm=TRUE))
+		if(minus_moy){x = x - m}
+		q1 = as.double(quantile(x,probs=0.01,type=type,na.rm=TRUE))
+		q99 = as.double(quantile(x,probs=0.99,type=type,na.rm=TRUE))
+	}
 	
 	vol_q1 = (q1 - m) / qnorm(0.01)
 	vol_q99 = (q99 - m) / qnorm(0.99)
@@ -152,31 +150,23 @@ vol_fractile = function(x,type=1){
 	return(list(vol_sd=vol_sd,q1=q1,vol_q1=vol_q1,q99=q99,vol_q99=vol_q99,vol_f=vol_f))
 }
 vol_fractile2 = function(x){
-
 	x = x[!is.na(x)]
 	b = mean(x,na.rm=TRUE)
 	n = length(x)
-	
 	vol_sd = sqrt(mean(x^2,na.rm=TRUE))
 	vol_1p = (quantile(x,0.01) - b) / qnorm(0.01)
 	vol_99p = (quantile(x,0.99) - b) / qnorm(0.99)
-	
 	res = max(vol_sd,vol_1p,vol_99p)
-	
 	return(res)
 }
-vol_fractile3 = function(x){
-
+vol_fractile3 = function(x){ #LT_CRE #CT_IR
 	x = x[!is.na(x)]
-	b = mean(x,na.rm=TRUE)
+	b = mean(x)
 	n = length(x)
-	
-	vol_sd = sd(x,na.rm=TRUE) * sqrt(1-1/n)
-	vol_1p = (quantile(x,0.01) - b) / qnorm(0.01)
-	vol_99p = (quantile(x,0.99) - b) / qnorm(0.99)
-	
-	res = max(vol_sd,vol_1p,vol_99p)
-	
+	vol_std = sd(x,na.rm=TRUE) * sqrt(1-1/n)
+	vol_1_pct = (quantile(x,0.01) - b) / qnorm(0.01)
+	vol_99_pct = (quantile(x,0.99) - b) / qnorm(0.99)
+	res = max(vol_std,vol_1_pct,vol_99_pct)
 	return(res)
 }
 vol_standard = function (x){
@@ -185,4 +175,25 @@ vol_standard = function (x){
 	n = length(x)
 	vol_std = sd(x,na.rm = T)*sqrt(1-1/n)
 	return(vol_std)
+}
+
+vol_fractile_ct_CRE = function (x){
+  x = x[!is.na(x)]
+  b = 0
+  n = length(x)
+  vol_std = sqrt(mean(x^2,na.rm = T))
+  vol_1_pct = (quantile(x,0.01) - b) /qnorm(0.01)
+  vol_99_pct = (quantile(x,0.99) - b) /qnorm(0.99)
+  res = max(vol_std,vol_1_pct,vol_99_pct)
+  return(res)
+}
+vol_fractile_lt_CRE = function (x){ #=vol_fractile_ct_IR
+  x = x[!is.na(x)]
+  b = mean(x)
+  n = length(x)
+  vol_std = sd(x,na.rm=TRUE) * sqrt(1-1/n) 
+  vol_1_pct = (quantile(x,0.01) - b) / qnorm(0.01)
+  vol_99_pct = (quantile(x,0.99) - b) / qnorm(0.99)
+  res = max(vol_std,vol_1_pct,vol_99_pct)
+  return(res)
 }
