@@ -32,3 +32,7 @@ myVar.rindex() # de même, mais produisent une erreur (exception) si la chaîne 
 
 myVar.replace(old, new[, count]) # remplace count instances (toutes par défaut) de old par new
 
+myVar.split(seps[, maxsplit]) # découpe la chaîne en maxsplit morceaux (tous par défaut)
+myVar.rsplit() # effectue la même chose en commençant par la fin
+myVar.striplines() # effectue ce travail avec les caractères de fin de ligne
+
