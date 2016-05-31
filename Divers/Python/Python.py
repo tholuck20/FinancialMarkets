@@ -36,3 +36,10 @@ myVar.split(seps[, maxsplit]) # découpe la chaîne en maxsplit morceaux (tous p
 myVar.rsplit() # effectue la même chose en commençant par la fin
 myVar.striplines() # effectue ce travail avec les caractères de fin de ligne
 
+myVar.join(seq) # concatène les chaînes du conteneur seq en intercalant entre chaque élément la chaîne sur laquelle la méthode est appliquée
+
+type(myVar) #donne le type de la variable
+
+# Saisie au clavier
+myVar = input("Entrez un flottant :") #Retourne une variable de type 'str'
+myVar = float(input("Entrez un flottant :") #Retourne une variable de type 'float'
