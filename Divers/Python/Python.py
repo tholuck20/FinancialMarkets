@@ -23,3 +23,12 @@ myVar.strip([chars]) #avant et après (=TRIM vba)
 myVar.lstrip([chars]) #(=LTRIM)
 myVar.rstrip([chars]) #(=RTRIM)
 
+#Trouver
+
+myVar.find(sub[, start[, stop]]) # renvoie l'index de la chaîne sub dans la sous-chaîne start à stop, sinon renvoie -1
+myVar.rfind() # effectue le même travail en commençant par la fin 
+myVar.index()
+myVar.rindex() # de même, mais produisent une erreur (exception) si la chaîne n'est pas trouvée
+
+myVar.replace(old, new[, count]) # remplace count instances (toutes par défaut) de old par new
+
