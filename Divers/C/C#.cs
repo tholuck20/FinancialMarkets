@@ -1,3 +1,6 @@
+
+using System.Collections.Generic; // permet d'utiliser les List<>
+
 // Création de tableau 
 
 double[] D = new double[28]; // tableau fixe à 1 dimension
